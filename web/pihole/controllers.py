@@ -3,7 +3,7 @@ from flask import Blueprint, jsonify, request, render_template, flash, g, sessio
 import datetime
 import pihole.helpers as pihole_helpers
 
-from web.pihole.models import Device
+from web.pihole.models import PiHoleDevice
 
 # Import the database object from the main app module
 from web import db
@@ -14,5 +14,5 @@ pihole = Blueprint('pihole', __name__, url_prefix='/pihole')
 # Set the route and accepted methods
 @pihole.route('/devices', methods=['GET'])
 def get_devices():
-    devices = Device.getAll()
+    devices = PiHoleDevice.getAll()
     return jsonify({'devices' : devices})

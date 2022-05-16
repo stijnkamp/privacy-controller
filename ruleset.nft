@@ -1,0 +1,14 @@
+# Translated by iptables-restore-translate v1.8.7 on Thu Apr 28 12:55:59 2022
+add table ip filter
+add chain ip filter INPUT { type filter hook input priority 0; policy accept; }
+add chain ip filter FORWARD { type filter hook forward priority 0; policy accept; }
+add chain ip filter OUTPUT { type filter hook output priority 0; policy accept; }
+add rule ip filter FORWARD iifname "eth0" oifname "eth1" ct state related,established  counter accept
+add rule ip filter FORWARD iifname "eth1" oifname "eth0" counter accept
+add table ip nat
+add chain ip nat PREROUTING { type nat hook prerouting priority -100; policy accept; }
+add chain ip nat INPUT { type nat hook input priority 100; policy accept; }
+add chain ip nat OUTPUT { type nat hook output priority -100; policy accept; }
+add chain ip nat POSTROUTING { type nat hook postrouting priority 100; policy accept; }
+add rule ip nat POSTROUTING oifname "eth0" counter masquerade 
+# Completed on Thu Apr 28 12:55:59 2022

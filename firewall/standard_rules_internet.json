@@ -1,0 +1,258 @@
+{
+    "nftables": [
+        {
+            "metainfo": {
+                "json_schema_version": 1
+            }
+        },
+        {
+            "flush": {
+                "ruleset": null
+            }
+        },
+        {
+            "add": {
+                "table": {
+                    "family": "ip",
+                    "name": "filter"
+                }
+            }
+        },
+        {
+            "add": {
+                "chain": {
+                    "family": "ip",
+                    "table": "filter",
+                    "name": "INPUT",
+                    "type": "filter",
+                    "hook": "input",
+                    "prio": 0,
+                    "policy": "accept"
+                }
+            }
+        },
+        {
+            "add": {
+                "chain": {
+                    "family": "ip",
+                    "table": "filter",
+                    "name": "FORWARD",
+                    "type": "filter",
+                    "hook": "forward",
+                    "prio": 0,
+                    "policy": "accept"
+                }
+            }
+        },
+        {
+            "add": {
+                "rule": {
+                    "family": "ip",
+                    "table": "filter",
+                    "chain": "FORWARD",
+                    "expr": [
+                        {
+                            "match": {
+                                "op": "==",
+                                "left": {
+                                    "payload": {
+                                        "protocol": "ip",
+                                        "field": "saddr"
+                                    }
+                                },
+                                "right": "192.168.2.7"
+                            }
+                        },
+                        {
+                            "drop": null
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "add": {
+                "rule": {
+                    "family": "ip",
+                    "table": "filter",
+                    "chain": "FORWARD",
+                    "expr": [
+                        {
+                            "match": {
+                                "op": "==",
+                                "left": {
+                                    "meta": {
+                                        "key": "iifname"
+                                    }
+                                },
+                                "right": "eth0"
+                            }
+                        },
+                        {
+                            "match": {
+                                "op": "==",
+                                "left": {
+                                    "meta": {
+                                        "key": "oifname"
+                                    }
+                                },
+                                "right": "eth1"
+                            }
+                        },
+                        {
+                            "match": {
+                                "op": "==",
+                                "left": {
+                                    "ct": {
+                                        "key": "state"
+                                    }
+                                },
+                                "right": [
+                                    "established",
+                                    "related"
+                                ]
+                            }
+                        },
+                        {
+                            "accept": null
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "add": {
+                "rule": {
+                    "family": "ip",
+                    "table": "filter",
+                    "chain": "FORWARD",
+                    "expr": [
+                        {
+                            "match": {
+                                "op": "==",
+                                "left": {
+                                    "meta": {
+                                        "key": "iifname"
+                                    }
+                                },
+                                "right": "eth1"
+                            }
+                        },
+                        {
+                            "match": {
+                                "op": "==",
+                                "left": {
+                                    "meta": {
+                                        "key": "oifname"
+                                    }
+                                },
+                                "right": "eth0"
+                            }
+                        },
+                        {
+                            "accept": null
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "add": {
+                "chain": {
+                    "family": "ip",
+                    "table": "filter",
+                    "name": "OUTPUT",
+                    "type": "filter",
+                    "hook": "output",
+                    "prio": 0,
+                    "policy": "accept"
+                }
+            }
+        },
+        {
+            "add": {
+                "table": {
+                    "family": "ip",
+                    "name": "nat"
+                }
+            }
+        },
+        {
+            "add": {
+                "chain": {
+                    "family": "ip",
+                    "table": "nat",
+                    "name": "PREROUTING",
+                    "type": "nat",
+                    "hook": "prerouting",
+                    "prio": -100,
+                    "policy": "accept"
+                }
+            }
+        },
+        {
+            "add": {
+                "chain": {
+                    "family": "ip",
+                    "table": "nat",
+                    "name": "INPUT",
+                    "type": "nat",
+                    "hook": "input",
+                    "prio": 100,
+                    "policy": "accept"
+                }
+            }
+        },
+        {
+            "add": {
+                "chain": {
+                    "family": "ip",
+                    "table": "nat",
+                    "name": "OUTPUT",
+                    "type": "nat",
+                    "hook": "output",
+                    "prio": -100,
+                    "policy": "accept"
+                }
+            }
+        },
+        {
+            "add": {
+                "chain": {
+                    "family": "ip",
+                    "table": "nat",
+                    "name": "POSTROUTING",
+                    "type": "nat",
+                    "hook": "postrouting",
+                    "prio": 100,
+                    "policy": "accept"
+                }
+            }
+        },
+        {
+            "add": {
+                "rule": {
+                    "family": "ip",
+                    "table": "nat",
+                    "chain": "POSTROUTING",
+                    "expr": [
+                        {
+                            "match": {
+                                "op": "==",
+                                "left": {
+                                    "meta": {
+                                        "key": "oifname"
+                                    }
+                                },
+                                "right": "eth0"
+                            }
+                        },
+                        {
+                            "masquerade": null
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}
