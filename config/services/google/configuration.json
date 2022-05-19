@@ -1,0 +1,41 @@
+{
+  "slug": "google",
+  "device_types": [
+    {
+      "slug": "home",
+      "name": "Google Home",
+      "icon": "google_home.png",
+      "functionalities": [
+        {
+          "name": "Send a voice command",
+          "services": [
+            {
+              "slug": "process_voice_command",
+              "server_group": "google.google_servers",
+              "data": [
+                {
+                  "type": "general.voice_recording",
+                  "trigger": "Every 10 seconds"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "server_groups": [
+    {
+      "slug": "google_servers",
+      "name": "Google servers",
+      "queries": [
+        {
+          "domain": ".*google.*"
+        },
+        {
+          "company": ".*google.*"
+        }
+      ]
+    }
+  ]
+}

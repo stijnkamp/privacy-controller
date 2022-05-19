@@ -1,0 +1,60 @@
+{
+    "slug": "general",
+    "device_types": [
+        {
+            "slug": "device",
+            "name": "General device",
+            "icon": "laptop.png",
+            "functionalities": [
+                {
+                    "name": "Access local devices",
+                    "services": [
+                        {
+                            "slug": "local_access",
+                            "device_type": "*",
+                            "data": [
+                                {
+                                    "type": "general.any",
+                                    "trigger": "Anytime"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "Access to internet",
+                    "services": [
+                        {
+                            "slug": "public_access",
+                            "device_type": "*",
+                            "server_group": "*",
+                            "data": [
+                                {
+                                    "type": "general.any",
+                                    "trigger": "Anytime"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "data_types": [
+        {
+            "slug": "any",
+            "name": "Any device",
+            "icon": "address-card"
+        },
+        {
+            "slug": "device_status",
+            "name": "Device status",
+            "icon": "heartbeat"
+        },
+        {
+            "slug": "voice_recording",
+            "name": "Voice recording",
+            "icon": "microphone"
+        }
+    ]
+}

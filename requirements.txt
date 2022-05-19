@@ -1,0 +1,14 @@
+Flask==1.1.2
+Flask_Classful==0.15.0.dev1
+Flask_Cors==3.0.10
+Flask_Script==2.0.6
+Flask_SQLAlchemy==2.5.1
+PyJWT==2.4.0
+python_whois==0.7.3
+requests==2.25.1
+scapy==2.4.5
+SQLAlchemy==1.4.35
+watchdog==2.1.7
+websockets==10.2
+Werkzeug==1.0.1
+whois==0.9.13

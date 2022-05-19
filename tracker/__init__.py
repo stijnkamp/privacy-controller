@@ -1,6 +1,11 @@
-import subprocess, time, re, asyncio
-import threading
+import multiprocessing
+import subprocess
+import time
+import re
+import asyncio
+import thread
 import utils
+import config
 import datetime
 from tracker.tcp_dump_tracker import TcpDumpTracker
 from tracker.scapy_tracker import ScapyTracker
@@ -8,33 +13,33 @@ from tracker.scapy_tracker import ScapyTracker
 from web import db
 from web.api.models import Traffic
 
-from pihole.helpers import get_dhcp_leases
+from resolver.helpers import get_dhcp_leases
 # Matchers
 
 # Since we use a asyncio subprocess we do not need an extra thread.
-class Tracker(object):
+
+
+class Tracker(thread.Thread):
     def __init__(self, state):
-        self._lock = threading.Lock()
-        self._active = False
-
-        self._thread = threading.Thread(target=self._tracker_monitor)
-        self._thread.daemon = True
-
+        super().__init__('Tracker', state)
         self.handler = TcpDumpTracker(state)
-        self.state = state
         self.packets = {}
         self.destinations = set()
+        self.sources = set()
         self.prevPacketTime = None
-    def start(self):
-        with self._lock:
-            self._active = True
-        utils.log('[Tracker] Starting.')
-        self._thread.start()
-        
-    def _tracker_monitor(self):
-        utils.restart_upon_crash(asyncio.run(self.handler.start(self.packet_handler)))
+
+    def _monitor(self):
+        utils.safe_run(asyncio.run(
+            self.handler.start(self.packet_handler)))
+
     def getPacketKey(self, packet):
-        return "%s.%s.%s.%s" % (packet['src_ip'], packet['dst'], packet['proto'], packet['service'])
+        return {
+            'src': packet["src_ip"],
+            'dst': f'{packet["src_ip"]}.{packet["dst"]}',
+            'proto': f'{packet["src_ip"]}.{packet["dst"]}.{packet["proto"]}',
+            'service': f'{packet["src_ip"]}.{packet["dst"]}.{packet["proto"]}.{packet["service"]}'
+        }[config.packet_granularity]
+
     def packet_handler(self, packet):
         if(self.getPacketKey(packet) not in self.packets):
             self.packets[self.getPacketKey(packet)] = packet
@@ -45,19 +50,27 @@ class Tracker(object):
             self.prevPacketTime = packet['date_created']
             for packet in self.packets.values():
                 if packet['src'] == None:
-                    packet['src'] = self.state.dhcp_leases_addr[packet['src_ip']] if packet['src_ip'] in self.state.dhcp_leases_addr else packet['src_ip']
+                    if packet['src_ip'] in self.state.dhcp_leases_addr:
+                        packet['src'] = self.state.dhcp_leases_addr[packet['src_ip']]
+                    else:
+                        #If it is not in the dhcp list we will look it up within the resolver
+                        packet['src'] = packet['src_ip']
+                        self.sources.add(packet['src_ip'])
                 del packet['date_created']
                 del packet['src_ip']
                 new_traffic = Traffic(**packet)
-                db.session.add(new_traffic) 
+                db.session.add(new_traffic)
             with self._lock:
                 db.session.commit()
-            self.state.send_command('pihole', {
+            self.state.send_command('Resolver', {
                 'cmd': 'resolve_destinations',
                 'payload': self.destinations.copy()
             })
+            if len(self.sources) > 0:
+                self.state.send_command('Resolver', {
+                    'cmd': 'resolve_sources',
+                    'payload': self.sources.copy()
+                })
+                self.sources.clear()
             self.destinations.clear()
             self.packets = {}
-                    
-    def stop(self):
-        utils.log('[Tracker] Stopped.')

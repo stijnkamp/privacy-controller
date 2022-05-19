@@ -1,13 +1,10 @@
-from email.mime import base
-
-from pyparsing import List
-from web import db
 from datetime import datetime
 from dataclasses import dataclass
 from sqlalchemy.ext.hybrid import hybrid_property
 from web.pihole.models import PiHoleDevice
-from pihole.helpers import get_dhcp_leases
+from resolver.helpers import get_dhcp_leases
 
+from web import db
 
 class Base(db.Model):
     __abstract__ = True
@@ -39,7 +36,7 @@ class Device(Timestamps):
     hwaddr: str
     ip: str
     rules: list
-    functionalities: List
+    functionalities: list
     pihole_device_id = db.Column(db.Integer)
     device_type_id = db.Column(db.Integer, db.ForeignKey('device_types.id'))
     name = db.Column(db.String)
@@ -121,12 +118,14 @@ class Traffic(Base):
 class DeviceType(Base):
     __tablename__ = 'device_types'
     id: str
+    slug: str
     name: str
     type: str
-    logo: str
+    icon: str
+    slug = db.Column(db.String())
     name = db.Column(db.String())
     type = db.Column(db.String())
-    logo = db.Column(db.String())
+    icon = db.Column(db.String())
 
     devices = db.relationship('Device', back_populates="device_type")
     functionalities = db.relationship('Functionality')
@@ -172,7 +171,9 @@ class DeviceFunctionality(Base):
 class ServerGroup(Base):
     __tablename__ = 'server_groups'
     id: int
+    slug: str
     name: str
+    slug = db.Column(db.String)
     name = db.Column(db.String)
     locations: list
     companies: list
@@ -189,12 +190,14 @@ class ServerGroup(Base):
 class Service(Base):
     __tablename__ = 'services'
     id: int
+    slug: str
     device_type_id: int
     server_group_id: int
     cloud: bool
     device_type: DeviceType
     server_group: ServerGroup
     service_data: dict
+    slug = db.Column(db.String)
     device_type_id = db.Column(db.Integer, db.ForeignKey('device_types.id'))
     server_group_id = db.Column(db.Integer, db.ForeignKey('server_groups.id'))
     cloud = db.Column(db.Boolean)
@@ -228,8 +231,10 @@ class FunctionalityService(Base):
 class DataType(Base):
     __tablename__ = 'data_types'
     id: int
+    slug: str
     name: str
     icon: str
+    slug = db.Column(db.String)
     name = db.Column(db.String)
     icon = db.Column(db.String)
 

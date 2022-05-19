@@ -54,7 +54,8 @@ class DevicesView(Controller):
     def post(self):
         device_data = get_input(['name', 'pihole_device_id', 'device_type_id'])
         # Remove device if it existed
-        existing = api_models.Device.query.filter(api_models.Device.pihole_device_id==device_data['pihole_device_id']).first()
+        existing = api_models.Device.query.filter(
+            api_models.Device.pihole_device_id == device_data['pihole_device_id']).first()
         if(existing != None):
             db.session.delete(existing)
         new_device = api_models.Device(**device_data)
@@ -70,7 +71,7 @@ class DevicesView(Controller):
         #     new_device.rules.append(Rule(**rule))
         db.session.add(new_device)
         db.session.commit()
-        self.state.send_command('firewall', {
+        self.state.send_command('Firewall', {
             'cmd': 'set_standard_rules'
         })
         return jsonify({'added': new_device})

@@ -1,44 +1,44 @@
 [
-    {
-        "add": {
-            "rule": {
-                "family": "ip",
-                "table": "filter",
-                "chain": "FORWARD",
-                "expr": [
-                    {
-                        "drop": null
-                    }
-                ]
-            }
-        }
-    },
-    {
-        "add": {
-            "rule": {
-                "family": "ip",
-                "table": "filter",
-                "chain": "INPUT",
-                "expr": [
-                    {
-                        "drop": null
-                    }
-                ]
-            }
-        }
-    },
-    {
-        "add": {
-            "rule": {
-                "family": "ip",
-                "table": "filter",
-                "chain": "OUTPUT",
-                "expr": [
-                    {
-                        "drop": null
-                    }
-                ]
-            }
-        }
+  {
+    "add": {
+      "rule": {
+        "family": "ip",
+        "table": "filter",
+        "chain": "FORWARD",
+        "expr": [
+          {
+            "drop": null
+          }
+        ]
+      }
     }
+  },
+  {
+    "add": {
+      "rule": {
+        "family": "ip",
+        "table": "filter",
+        "chain": "INPUT",
+        "expr": [
+          {
+            "drop": null
+          }
+        ]
+      }
+    }
+  },
+  {
+    "add": {
+      "rule": {
+        "family": "ip",
+        "table": "filter",
+        "chain": "OUTPUT",
+        "expr": [
+          {
+            "drop": null
+          }
+        ]
+      }
+    }
+  }
 ]

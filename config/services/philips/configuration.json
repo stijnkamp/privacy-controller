@@ -1,0 +1,63 @@
+{
+  "slug": "philips",
+  "device_types": [
+    {
+      "slug": "bridge",
+      "name": "Philips Hue Bridge",
+      "icon": "hue_bridge.png",
+      "functionalities": [
+        {
+          "name": "Control using the dedicated app",
+          "services": [
+            {
+              "slug": "send_status_to_hue_cloud",
+              "server_group": "philips.philips_hue_servers",
+              "data": [
+                {
+                  "type": "philips.lamp_status",
+                  "trigger": "Every 10 seconds"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Control by Google Voice Command",
+          "services": [
+            {
+              "slug": "send_status_to_google_servers",
+              "server_group": "philips.philips_hue_servers",
+              "data": [
+                {
+                  "type": "philips.lamp_status",
+                  "trigger": "Every 10 seconds"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "server_groups": [
+    {
+      "slug": "philips_hue_servers",
+      "name": "Philips Hue servers",
+      "queries": [
+        {
+          "domain": ".*philips.*"
+        },
+        {
+          "company": ".*philips.*"
+        }
+      ]
+    }
+  ],
+  "data_types": [
+    {
+      "slug": "lamp_status",
+      "name": "Lamp statuses",
+      "icon": "lightbulb"
+    }
+  ]
+}

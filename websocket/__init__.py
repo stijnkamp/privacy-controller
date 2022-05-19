@@ -1,4 +1,4 @@
-import threading
+import thread
 import utils
 import logging
 import time
@@ -6,32 +6,28 @@ import asyncio
 import json
 import secrets
 import websockets
+import config
 
 
-class Websocket(object):
+class Websocket(thread.Thread):
+    """
+    Service to start a websocket which can send updated to the front-end in real-time.
+    Clients can register to specific channels and it will get updates for those messages through a websocket.
+    """
 
     def __init__(self, state):
-        self._lock = threading.Lock()
-        self._active = False
-
-        self._thread = threading.Thread(target=self._websocket_monitor)
-        self._thread.daemon = True
+        super().__init__('Websocket', state)
+        # Keep track of all connected clients
         self.clients = []
-        self.state = state
-        self.queue = state.get_queue('websocket')
 
-    def start(self):
-        with self._lock:
-            self._active = True
-        utils.log('[Websocket] Starting.')
+    def _monitor(self):
         self.event_loop = asyncio.new_event_loop()
-        self._thread.start()
-
-    def _websocket_monitor(self):
         utils.safe_run(self._websocket_thread())
 
     async def notify_clients(self):
-        while self.running():
+        """Watch the queue and send message from queue to registered clients
+        """
+        while True:
             notification = await self.event_loop.run_in_executor(None, self.queue.get)
             if('event' in notification):
                 for client in self.clients:
@@ -44,18 +40,21 @@ class Websocket(object):
                         await client['websocket'].send(notification['payload'])
 
     async def handler(self, websocket, path):
+        """Handle a connection and dispatch it according to who is connecting.
+
+        Args:
+            websocket (WebsocketClient): The websocket client that just connected.
+            path (str): The path to which the client subscribed
         """
-        Handle a connection and dispatch it according to who is connecting.
-        """
-        # Register.
+
         client = {
             'websocket': websocket,
             'events': set()
         }
         self.clients.append(client)
-        utils.log('Client refistered')
+        utils.log('New client registered')
         try:
-            while self.running():
+            while True:
                 message = await websocket.recv()
                 if utils.is_json(message):
                     cmd = json.loads(message)
@@ -64,42 +63,21 @@ class Websocket(object):
                     if('unregister' in cmd):
                         client['events'].remove(cmd['unregister'])
         finally:
-            # Unregister.
             self.clients.remove(client)
 
     async def check_for_stop(self):
+        """Keep running until thread is not active
+        """
         while self.running():
             await asyncio.sleep(1)
-        for task in asyncio.all_tasks():
-            print(task)
-            task.cancel()
-
-    def running(self):
-        with self._lock:
-            return self._active
-
-    async def start_server(self):
-        start_server = websockets.serve(
-            self.handler, "0.0.0.0", 8001, loop=self.event_loop)
-        async with start_server:
-            while(self.running()):
-                await asyncio.sleep(1)
+        self.event_loop.stop()
 
     def _websocket_thread(self):
-        start_server = self.start_server
+        start_server = websockets.serve(self.handler, config.websocket['HOST'], config.websocket['PORT'], loop=self.event_loop)
         notify_clients = self.notify_clients()
         check_stop = self.check_for_stop()
-        print("CREATEING WAIT")
-        cors = asyncio.wait([start_server, notify_clients, check_stop])
+        tasks = asyncio.wait([start_server, notify_clients, check_stop])
         try:
-            self.event_loop.run_until_complete(cors)
+            self.event_loop.run_until_complete(tasks)
         except asyncio.CancelledError:
-            print("CLOSING")
             self.event_loop.close()
-
-    def stop(self):
-        utils.log("Stopping websocket")
-        with self._lock:
-            self._active = False
-        self._thread.join()
-        utils.log('[Websocket] Stopped.')

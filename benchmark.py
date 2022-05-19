@@ -14,6 +14,8 @@ PORT = 8111
 
 total_received = NR_OF_MSG * [0]
 current_iteration = 0
+
+
 def receive_packet(sock, length):
     remaining = length
     data = bytearray()
@@ -23,6 +25,8 @@ def receive_packet(sock, length):
         remaining -= len(new_data)
         data += new_data
     return data
+
+
 def clear_buffer(sock):
     print("CLEARING BUFFER")
     sock.setblocking(0)
@@ -33,18 +37,24 @@ def clear_buffer(sock):
         pass
     sock.setblocking(1)
     print("DONE CLEARING BUFFER")
+
+
 def handle_packet(packet):
     global total_received, current_iteration
     if packet['service'].isnumeric() and int(packet['service']) == PORT:
         print(current_iteration)
         total_received[current_iteration] += packet['size']
         print("RECEIVED")
+
+
 def _start_tracking():
     state = State()
     handler = TcpDumpTracker(state)
     asyncio.run(handler.start(handle_packet, 'port 8111'))
+
+
 def start():
-    utils.log('[MAIN] Starting.')
+    """A benchmark of number of total packets captured by tcp_dump"""
     thread = threading.Thread(target=_start_tracking)
     print("Starting thread")
     thread.daemon = True
@@ -53,7 +63,7 @@ def start():
     print('Setting up socket')
     rs = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     rs.bind((RECEIVE_IP, PORT))
-    rs.listen(1) 
+    rs.listen(1)
 
     # I have accepted the TCP connection
     newsocket, addr = rs.accept()
@@ -72,6 +82,7 @@ def start():
     print(total_by_socket)
     print("PERCENTAGE")
     print(total_received*100/total_by_socket)
+
 
 if __name__ == '__main__':
     start()

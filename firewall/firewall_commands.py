@@ -1,16 +1,16 @@
 import os
 import json
-import utils
-from firewall.rule_parser import RuleParser
 import nftables
 
+import utils
+from firewall.rule_parser import RuleParser
 
 class FirewallCommands(object):
     def __init__(self):
         self.rule_parser = RuleParser()
-        self.setup_nftables()
+        self._setup_nftables()
 
-    def setup_nftables(self):
+    def _setup_nftables(self):
         self.nft = nftables.Nftables()
         self.nft.set_json_output(True)
         self.nft.set_stateless_output(False)
@@ -50,10 +50,6 @@ class FirewallCommands(object):
             exit(0)
         data_structure = json.loads(output)
         return data_structure
-
-    def default(self):
-        utils.log("Command not found")
-        return "Incorrect day"
 
     def get(self, cmd):
         func = getattr(self, cmd)

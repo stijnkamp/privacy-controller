@@ -1,0 +1,41 @@
+{
+  "slug": "tuya",
+  "device_types": [
+    {
+      "slug": "light",
+      "name": "A Tuya light",
+      "icon": "tuya_light.png",
+      "functionalities": [
+        {
+          "name": "Control using the dedicated app",
+          "services": [
+            {
+              "slug": "send_cloud_commands",
+              "server_group": "tuya_servers",
+              "data": [
+                {
+                  "type": "general.device_data",
+                  "trigger": "Every 10 seconds"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "server_groups": [
+    {
+      "slug": "tuya_servers",
+      "name": "Tuya servers",
+      "queries": [
+        {
+          "domain": ".*tuya.*"
+        },
+        {
+          "company": ".*tuya.*"
+        }
+      ]
+    }
+  ]
+}
