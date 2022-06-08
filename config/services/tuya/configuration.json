@@ -11,7 +11,7 @@
           "services": [
             {
               "slug": "send_cloud_commands",
-              "server_group": "tuya_servers",
+              "server_group": "tuya.tuya_servers",
               "data": [
                 {
                   "type": "general.device_data",

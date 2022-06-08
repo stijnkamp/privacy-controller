@@ -7,6 +7,7 @@ from flask_sqlalchemy import SQLAlchemy
 import config
 
 
+
 # Define the WSGI application object
 app = Flask(__name__, static_folder='www', static_url_path="/")
 
@@ -20,5 +21,7 @@ app.config.update(config.flask)
 # by modules and controllers
 db = SQLAlchemy(app)
 # Build the database:
+from web.api import models as api_models
+from web.pihole import models as pihole_models
 # This will create the database file using SQLAlchemy
 db.create_all()

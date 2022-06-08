@@ -6,6 +6,7 @@ import thread
 
 from web import app
 from web.api import Api
+from web.auth import Auth
 
 # Register the general application
 @app.route('/docs')
@@ -36,7 +37,7 @@ class WebServer(thread.Thread):
     def setup_modules(self):
         """Register the different classfull Flask modules
         """
-        modules = [Api(self.state)]
+        modules = [Api(self.state), Auth(self.state)]
         for module in modules:
             module.register(app)
 

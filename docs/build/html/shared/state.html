@@ -108,12 +108,33 @@ And a service can wait for a command in the queue to execute.</p>
 <dl class="py method">
 <dt id="state.State.get_queue">
 <code class="sig-name descname">get_queue</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">worker</span></em><span class="sig-paren">)</span><a class="headerlink" href="#state.State.get_queue" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Retrieve queue if it exists for particular service</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>worker</strong> (<em>str</em>) – Service name</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The specific worker queue</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>multiprocessing.Queue</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="state.State.send_command">
 <code class="sig-name descname">send_command</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">worker</span></em>, <em class="sig-param"><span class="n">cmd</span></em><span class="sig-paren">)</span><a class="headerlink" href="#state.State.send_command" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Add command to a specific queue</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>worker</strong> (<em>str</em>) – Service name</p></li>
+<li><p><strong>cmd</strong> (<em>dict</em>) – The command for a specific service worker.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 

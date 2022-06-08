@@ -60,10 +60,9 @@ Here you can control the entire application add new discovered devices and inves
    
    self
 
-Start scripts
+Installation
 =============
-The controller has two main scripts which you can run. One is the main controller which you can run using ``main.py``. 
-The other is ``benchmark.py`` which can be used to benchmark the tracking of TCP packets. 
+We separate the installation between the hardware setup and the software setup.
 
 .. toctree::
    :maxdepth: 1

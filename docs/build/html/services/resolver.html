@@ -59,11 +59,14 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="firewall.html">1. Firewall Service</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">2. Resolver Service</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#submodules">2.1. Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-resolver.dns_lookup">2.2. resolver.dns_lookup module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-resolver.helpers">2.3. resolver.helpers module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-resolver.resolver_commands">2.4. resolver.resolver_commands module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-resolver">2.5. Module contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#general-flow">2.1. General flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#submodules">2.2. Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-resolver.dns_lookup">2.2.1. resolver.dns_lookup module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-resolver.helpers">2.2.2. resolver.helpers module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-resolver.resolver_commands">2.2.3. resolver.resolver_commands module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-resolver">2.2.4. Module contents</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="tracker.html">3. Tracker Service</a></li>
@@ -96,11 +99,14 @@
              
   <div class="section" id="resolver-service">
 <span id="id1"></span><h1><span class="section-number">2. </span>Resolver Service<a class="headerlink" href="#resolver-service" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="submodules">
-<h2><span class="section-number">2.1. </span>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+<p>The resolver</p>
+<div class="section" id="general-flow">
+<h2><span class="section-number">2.1. </span>General flow<a class="headerlink" href="#general-flow" title="Permalink to this headline">¶</a></h2>
 </div>
+<div class="section" id="submodules">
+<h2><span class="section-number">2.2. </span>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="module-resolver.dns_lookup">
-<span id="resolver-dns-lookup-module"></span><h2><span class="section-number">2.2. </span>resolver.dns_lookup module<a class="headerlink" href="#module-resolver.dns_lookup" title="Permalink to this headline">¶</a></h2>
+<span id="resolver-dns-lookup-module"></span><h3><span class="section-number">2.2.1. </span>resolver.dns_lookup module<a class="headerlink" href="#module-resolver.dns_lookup" title="Permalink to this headline">¶</a></h3>
 <dl class="py function">
 <dt id="resolver.dns_lookup.get_company_for_domain">
 <code class="sig-prename descclassname">resolver.dns_lookup.</code><code class="sig-name descname">get_company_for_domain</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">domain</span></em><span class="sig-paren">)</span><a class="headerlink" href="#resolver.dns_lookup.get_company_for_domain" title="Permalink to this definition">¶</a></dt>
@@ -123,7 +129,7 @@
 
 </div>
 <div class="section" id="module-resolver.helpers">
-<span id="resolver-helpers-module"></span><h2><span class="section-number">2.3. </span>resolver.helpers module<a class="headerlink" href="#module-resolver.helpers" title="Permalink to this headline">¶</a></h2>
+<span id="resolver-helpers-module"></span><h3><span class="section-number">2.2.2. </span>resolver.helpers module<a class="headerlink" href="#module-resolver.helpers" title="Permalink to this headline">¶</a></h3>
 <dl class="py function">
 <dt id="resolver.helpers.get_database_file">
 <code class="sig-prename descclassname">resolver.helpers.</code><code class="sig-name descname">get_database_file</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#resolver.helpers.get_database_file" title="Permalink to this definition">¶</a></dt>
@@ -146,7 +152,7 @@
 
 </div>
 <div class="section" id="module-resolver.resolver_commands">
-<span id="resolver-resolver-commands-module"></span><h2><span class="section-number">2.4. </span>resolver.resolver_commands module<a class="headerlink" href="#module-resolver.resolver_commands" title="Permalink to this headline">¶</a></h2>
+<span id="resolver-resolver-commands-module"></span><h3><span class="section-number">2.2.3. </span>resolver.resolver_commands module<a class="headerlink" href="#module-resolver.resolver_commands" title="Permalink to this headline">¶</a></h3>
 <dl class="py class">
 <dt id="resolver.resolver_commands.ResolverCommands">
 <em class="property">class </em><code class="sig-prename descclassname">resolver.resolver_commands.</code><code class="sig-name descname">ResolverCommands</code><a class="headerlink" href="#resolver.resolver_commands.ResolverCommands" title="Permalink to this definition">¶</a></dt>
@@ -161,11 +167,16 @@
 <code class="sig-name descname">resolve_destinations</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">destinations</span></em><span class="sig-paren">)</span><a class="headerlink" href="#resolver.resolver_commands.ResolverCommands.resolve_destinations" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="py method">
+<dt id="resolver.resolver_commands.ResolverCommands.resolve_sources">
+<code class="sig-name descname">resolve_sources</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sources</span></em><span class="sig-paren">)</span><a class="headerlink" href="#resolver.resolver_commands.ResolverCommands.resolve_sources" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 </div>
 <div class="section" id="module-resolver">
-<span id="module-contents"></span><h2><span class="section-number">2.5. </span>Module contents<a class="headerlink" href="#module-resolver" title="Permalink to this headline">¶</a></h2>
+<span id="module-contents"></span><h3><span class="section-number">2.2.4. </span>Module contents<a class="headerlink" href="#module-resolver" title="Permalink to this headline">¶</a></h3>
 <dl class="py class">
 <dt id="resolver.Resolver">
 <em class="property">class </em><code class="sig-prename descclassname">resolver.</code><code class="sig-name descname">Resolver</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">state</span></em><span class="sig-paren">)</span><a class="headerlink" href="#resolver.Resolver" title="Permalink to this definition">¶</a></dt>
@@ -177,6 +188,7 @@
 
 </dd></dl>
 
+</div>
 </div>
 </div>
 

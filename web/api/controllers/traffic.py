@@ -6,9 +6,11 @@ from web.api import models as api_models
 from web.pihole import models as pihole_models
 from web.helpers import get_input, parse_model
 from web import db
+from web.auth.helpers import token_required
 
 
 class TrafficView(Controller):
+    decorators = [token_required]
     excluded_methods = ['get_sources', 'get_destinations']
 
     @route('', methods=['POST'])
@@ -37,17 +39,30 @@ class TrafficView(Controller):
             group_date_format, api_models.Traffic.date_created).label('date_group'))
         traffic_query = traffic_query.filter(api_models.Traffic.date_created > since).filter(
             api_models.Traffic.date_created <= till)
-        if 'devices' in filter:
+        if 'devices' in filter and len(filter['devices'])>0:
             devices = api_models.Device.query.filter(
                 api_models.Device.id.in_(filter['devices'])).all()
-            deviceMacs = list(map(lambda device: device.hwaddr, devices))
+            device_macs = set(map(lambda device: device.hwaddr, devices))
             traffic_query = traffic_query.filter(
-                api_models.Traffic.src.in_(deviceMacs))
-        traffic_query = traffic_query.group_by(
-            getattr(api_models.Traffic, group_by), 'date_group')
-        print(traffic_query.statement.compile(
-            compile_kwargs={"literal_binds": True}))
-
+                api_models.Traffic.src.in_(device_macs))
+        server_ips = set()
+        ip_filter = False
+        if 'server_groups' in filter and len(filter['server_groups'])>0:
+            ip_filter = True
+            servers = db.session.query(api_models.Server.ip).filter( api_models.Server.server_group_id.in_(filter['server_groups'])).all()
+            server_ips = server_ips.union(set(map(lambda server: server.ip, servers)))
+        if 'locations' in filter and len(filter['locations'])>0:
+            ip_filter = True
+            servers = db.session.query(api_models.Server.ip).join(api_models.Location).filter(api_models.Location.country.in_(filter['locations'])).all()
+            server_ips = server_ips.union(set(map(lambda server: server.ip, servers)))
+        if 'companies' in filter and len(filter['companies'])>0:
+            ip_filter = True
+            servers = db.session.query(api_models.Server.ip).filter(api_models.Server.company_id.in_(filter['companies'])).all()
+            server_ips = server_ips.union(set(map(lambda server: server.ip, servers)))
+        if ip_filter:
+            traffic_query = traffic_query.filter(api_models.Traffic.dst.in_(server_ips))
+        traffic_query = traffic_query.group_by(getattr(api_models.Traffic, group_by), 'date_group')
+        
         def parse_result(trafficData):
             trafficData = parse_model(trafficData)
             traffic = trafficData['Traffic']
@@ -82,4 +97,16 @@ class TrafficView(Controller):
             map(lambda traffic: traffic.Traffic.dst, ip_addresses))
         servers = api_models.Server.query.filter(
             api_models.Server.ip.in_(ip_addresses)).all()
+            
         return servers
+    
+    @route('filters', methods=['GET'])
+    def get_filters(self):
+        locations = db.session.query(api_models.Location.country).group_by(api_models.Location.country).all()
+        server_groups = api_models.ServerGroup.query.all()
+        companies = api_models.Company.query.all()
+        return jsonify({
+            'locations': locations,
+            'server_groups': server_groups,
+            'companies': companies
+        })

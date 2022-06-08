@@ -116,6 +116,18 @@ Next it is waiting for a queue command to check again the devices and setup the 
 <dt id="firewall.Firewall">
 <em class="property">class </em><code class="sig-prename descclassname">firewall.</code><code class="sig-name descname">Firewall</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">state</span></em><span class="sig-paren">)</span><a class="headerlink" href="#firewall.Firewall" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="../shared/thread.html#thread.Thread" title="thread.Thread"><code class="xref py py-class docutils literal notranslate"><span class="pre">thread.Thread</span></code></a></p>
+<p>Setup the Firewall thread</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>state</strong> (<a class="reference internal" href="../shared/state.html#state.State" title="state.State"><em>State</em></a>) – The shared state with other services</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="firewall.Firewall.firewall_thread">
+<code class="sig-name descname">firewall_thread</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#firewall.Firewall.firewall_thread" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set up the starting firewall rules and wait for a task in the queue to be executed.</p>
+</dd></dl>
+
 </dd></dl>
 
 <div class="section" id="firewall-commands">
@@ -125,6 +137,7 @@ Next it is waiting for a queue command to check again the devices and setup the 
 <dt id="firewall.firewall_commands.FirewallCommands">
 <em class="property">class </em><code class="sig-prename descclassname">firewall.firewall_commands.</code><code class="sig-name descname">FirewallCommands</code><a class="headerlink" href="#firewall.firewall_commands.FirewallCommands" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The firewall commands that can be done from the Firewall queue</p>
 <dl class="py method">
 <dt id="firewall.firewall_commands.FirewallCommands.get">
 <code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cmd</span></em><span class="sig-paren">)</span><a class="headerlink" href="#firewall.firewall_commands.FirewallCommands.get" title="Permalink to this definition">¶</a></dt>
@@ -133,12 +146,22 @@ Next it is waiting for a queue command to check again the devices and setup the 
 <dl class="py method">
 <dt id="firewall.firewall_commands.FirewallCommands.get_firewall_rules">
 <code class="sig-name descname">get_firewall_rules</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#firewall.firewall_commands.FirewallCommands.get_firewall_rules" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Retrieve the current set of rules from the nf-tables service (<a class="reference external" href="https://firewalld.org/2019/09/libnftables-JSON">JSON structure</a>)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A dict with all rules</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="firewall.firewall_commands.FirewallCommands.set_standard_rules">
 <code class="sig-name descname">set_standard_rules</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#firewall.firewall_commands.FirewallCommands.set_standard_rules" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Write all needed rules to the nf-tables</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -153,12 +176,33 @@ Next it is waiting for a queue command to check again the devices and setup the 
 <dl class="py method">
 <dt id="firewall.rule_parser.RuleParser.get_rules_for_devices">
 <code class="sig-name descname">get_rules_for_devices</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#firewall.rule_parser.RuleParser.get_rules_for_devices" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Retrieve devices from database and create nf-table rules.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>_description_</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>_type_</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="firewall.rule_parser.RuleParser.get_service_settings">
 <code class="sig-name descname">get_service_settings</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">service</span></em><span class="sig-paren">)</span><a class="headerlink" href="#firewall.rule_parser.RuleParser.get_service_settings" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Get rules for specific service</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>service</strong> (<em>str</em>) – json file name for standard rules</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>service rules</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 

@@ -3,7 +3,7 @@ import utils
 import time
 from watchdog.observers import Observer
 from resolver.helpers import get_dhcp_leases
-from resolver import dns_lookup, resolver_commands
+from resolver import resolver_commands
 
 
 class Resolver(thread.Thread):

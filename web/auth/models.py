@@ -3,7 +3,6 @@ from datetime import datetime
 from dataclasses import dataclass
 
 
-@dataclass
 class Base(db.Model):
     __abstract__ = True
     # Exported using dataclass
@@ -16,11 +15,14 @@ class Base(db.Model):
     date_modified = db.Column(db.DateTime,  default=db.func.current_timestamp(
     ), onupdate=db.func.current_timestamp())
 
-
+@dataclass
 class User(Base):
-
     __tablename__ = 'users'
-
+    id: int
+    name: str
+    email: str
+    date_created: datetime
+    date_modified: datetime
     # User Name
     name = db.Column(db.String(128),  nullable=False)
 

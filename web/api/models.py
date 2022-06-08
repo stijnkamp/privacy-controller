@@ -1,8 +1,9 @@
+import re
 from datetime import datetime
 from dataclasses import dataclass
+from importlib_metadata import List
 from sqlalchemy.ext.hybrid import hybrid_property
 from web.pihole.models import PiHoleDevice
-from resolver.helpers import get_dhcp_leases
 
 from web import db
 
@@ -43,7 +44,7 @@ class Device(Timestamps):
 
     rules = db.relationship('Rule', back_populates="device")
     functionalities = db.relationship(
-        'Functionality', secondary="device_functionalities")
+        'Functionality', secondary="device_functionalities", back_populates="devices")
     device_type = db.relationship('DeviceType', back_populates="devices")
 
     def __repr__(self):
@@ -59,12 +60,7 @@ class Device(Timestamps):
 
     @property
     def ip(self):
-        addresses = []
-        dhcp_leases = get_dhcp_leases()
-        if(self.pihole_device.hwaddr) in dhcp_leases:
-            return dhcp_leases[self.pihole_device.hwaddr]
-        if len(self.pihole_device.addresses) > 0:
-            return self.pihole_device.addresses[0].ip
+        return self.pihole_device.ip
 
 
 @dataclass
@@ -147,8 +143,8 @@ class Functionality(Base):
     deviceType = db.relationship(
         'DeviceType', back_populates="functionalities")
 
-    services = db.relationship('Service', secondary="functionality_services")
-
+    services = db.relationship('Service', secondary="functionality_services", back_populates="functionalities")
+    devices = db.relationship('Device', secondary="device_functionalities", back_populates="functionalities")
     def __repr__(self):
         return '<Functionality %r>' % (self.id)
 
@@ -175,12 +171,14 @@ class ServerGroup(Base):
     name: str
     slug = db.Column(db.String)
     name = db.Column(db.String)
-    locations: list
+    # locations: list
     companies: list
 
     locations = db.relationship('Location', secondary="servers")
     companies = db.relationship(
         'Company', secondary="servers", overlaps="locations")
+
+    services = db.relationship('Service', back_populates="server_group")
 
     def __repr__(self):
         return '<ServerGroup %r>' % (self.id)
@@ -203,9 +201,9 @@ class Service(Base):
     cloud = db.Column(db.Boolean)
 
     device_type = db.relationship('DeviceType')
-    server_group = db.relationship('ServerGroup')
+    server_group = db.relationship('ServerGroup', back_populates="services")
     service_data = db.relationship('ServiceData', back_populates="service")
-
+    functionalities = db.relationship('Functionality', secondary="functionality_services", back_populates="services")
     def __repr__(self):
         return '<Service %r>' % (self.id)
 
@@ -237,10 +235,26 @@ class DataType(Base):
     slug = db.Column(db.String)
     name = db.Column(db.String)
     icon = db.Column(db.String)
-
+    
     def __repr__(self):
         return '<DataType %r>' % (self.id)
 
+AbstractionDataType = db.Table('abstraction_data_type',
+    db.Column('id', db.Integer, primary_key=True),
+    db.Column('abstraction_id', db.Integer, db.ForeignKey('abstractions.id')),
+    db.Column('data_type_id', db.Integer, db.ForeignKey('data_types.id')))
+
+@dataclass
+class Abstraction(Base):
+    __tablename__ = 'abstractions'
+    id: int
+    name: str
+    name = db.Column(db.String)
+
+    needed_data_types = db.relationship('DataType', secondary=AbstractionDataType)
+
+    def __repr__(self):
+        return '<Abstraction %r>' % (self.id)
 
 @dataclass
 class ServiceData(Base):
@@ -270,24 +284,33 @@ class ServerQuery(Base):
     server_group_id: int
     ip: str
     domain: str
+    company: str
     server_group_id = db.Column(db.Integer, db.ForeignKey('server_groups.id'))
     ip = db.Column(db.String)
     domain = db.Column(db.String)
+    company = db.Column(db.String)
 
     server_group = db.relationship('ServerGroup')
-
     def __repr__(self):
         return '<ServerQuery %r>' % (self.id)
 
     @staticmethod
-    def find_server_group_id(domain, ip):
+    def find_server_group_id(domain, ip, company = None):
         server_query = ServerQuery.query
         if ip != None:
-            server_query = server_query.filter(db.or_(
-                ServerQuery.ip == None, db.bindparam('ip_query', ip).contains(ServerQuery.ip)))
+            server_query = server_query.filter(db.or_(ServerQuery.ip == None, db.bindparam('ip_query', ip.lower()).regexp_match(ServerQuery.ip)))
+        else:
+            server_query = server_query.filter(ServerQuery.ip == None)
         if domain != None:
-            server_query = server_query.filter(db.or_(ServerQuery.domain == None, db.bindparam(
-                'domain_query', domain).contains(ServerQuery.domain)))
+            server_query = server_query.filter(db.or_(ServerQuery.domain == None, db.bindparam('domain_query', domain.lower()).regexp_match(ServerQuery.domain)))
+        else:
+            server_query = server_query.filter(ServerQuery.domain == None)
+            # server_query = server_query.filter(db.or_(ServerQuery.domain == None, db.bindparam(
+            #     'domain_query', domain).contains(ServerQuery.domain)))
+        if company != None:
+            server_query = server_query.filter(db.or_(ServerQuery.company == None, db.bindparam('company_query', company.lower()).regexp_match(ServerQuery.company)))
+        else:
+            server_query = server_query.filter(ServerQuery.company == None)
         result = server_query.first()
         if not result:
             return None
@@ -334,6 +357,7 @@ class Server(Base):
     server_group: ServerGroup
     company: Company
     location: Location
+    domains: list
 
     server_group_id = db.Column(db.Integer, db.ForeignKey('server_groups.id'))
     company_id = db.Column(db.Integer, db.ForeignKey('companies.id'))
@@ -345,6 +369,8 @@ class Server(Base):
     company = db.relationship(
         'Company',  back_populates="servers", overlaps="companies")
     location = db.relationship('Location', overlaps="locations")
+    
+    domains = db.relationship('Domain', back_populates='server')
 
     def __repr__(self):
         return '<Server %r>' % (self.id)

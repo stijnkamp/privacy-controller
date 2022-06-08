@@ -40,7 +40,7 @@ def update_or_create(session, model, query, values = None):
         values = query
     instance = session.query(model).filter_by(**query).first()
     if instance:
-        instance.update(**values)
+        session.query(model).filter_by(id=instance.id).update(values)
     else:
         instance = model(**values)
         session.add(instance)

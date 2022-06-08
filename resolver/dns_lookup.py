@@ -38,5 +38,11 @@ def get_location_for_ip(ip):
 
 def get_company_for_domain(domain):
     domain = re.sub("^[^.]*\.(?=\w+\.\w+$)", "", domain)
-    info = whois.whois(domain)
-    return info['org']
+    try:
+        info = whois.whois(domain)
+        company = info['prg']
+        if isinstance(company, list):
+            return company[0]
+        return company
+    except Exception as e:
+        return None

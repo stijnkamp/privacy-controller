@@ -6,6 +6,8 @@ import utils
 from firewall.rule_parser import RuleParser
 
 class FirewallCommands(object):
+    """The firewall commands that can be done from the Firewall queue
+    """
     def __init__(self):
         self.rule_parser = RuleParser()
         self._setup_nftables()
@@ -19,6 +21,8 @@ class FirewallCommands(object):
         self.nft.set_numeric_proto_output(False)
 
     def set_standard_rules(self):
+        """Write all needed rules to the nf-tables 
+        """
         __location__ = os.path.realpath(os.path.join(
             os.getcwd(), os.path.dirname(__file__)))
         f = open(os.path.join(__location__, 'standard_rules.json'))
@@ -38,6 +42,11 @@ class FirewallCommands(object):
         f.close()
 
     def get_firewall_rules(self):
+        """Retrieve the current set of rules from the nf-tables service (`JSON structure <https://firewalld.org/2019/09/libnftables-JSON>`_)
+
+        Returns:
+            dict: A dict with all rules 
+        """
         rc, output, error = self.nft.cmd("list ruleset")
         if rc != 0:
             # do proper error handling here, exceptions etc

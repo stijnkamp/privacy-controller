@@ -1,0 +1,27 @@
+[
+  {
+    "add": {
+      "rule": {
+        "family": "ip",
+        "table": "filter",
+        "chain": "FORWARD",
+        "expr": [
+          {
+            "match": {
+              "op": "==",
+              "left": {
+                "meta": {
+                  "key": "oifname"
+                }
+              },
+              "right": "eth0"
+            }
+          },
+          {
+            "drop": null
+          }
+        ]
+      }
+    }
+  }
+]

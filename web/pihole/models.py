@@ -1,8 +1,8 @@
 from web import db
 from dataclasses import dataclass
 from datetime import datetime
-from sqlalchemy.ext.hybrid import hybrid_property
 
+from resolver.helpers import get_dhcp_leases
 
 @dataclass
 class PiHoleDevice(db.Model):
@@ -17,6 +17,7 @@ class PiHoleDevice(db.Model):
     macVendor: str
     addresses: list
     name: str
+    ip: str
 
     id = db.Column(db.Integer, primary_key=True)
     hwaddr = db.Column(db.String)
@@ -36,7 +37,14 @@ class PiHoleDevice(db.Model):
                 name = address.name
                 break
         return name
-
+    @property
+    def ip(self):
+        addresses = []
+        dhcp_leases = get_dhcp_leases()
+        if(self.hwaddr) in dhcp_leases:
+            return dhcp_leases[self.hwaddr]
+        if len(self.addresses) > 0:
+            return self.addresses[0].ip
     def __repr__(self):
         return '<PiHoleDevice %r>' % (self.id)
 

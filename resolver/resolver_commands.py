@@ -1,9 +1,10 @@
-from web import db
-from web.api import models as api_models
+import web
+import web.api.models as api_models
 from web.pihole import models as pihole_models
 from web.helpers import get_or_create
 import threading
 import utils
+import time
 from resolver import dns_lookup
 
 
@@ -17,10 +18,12 @@ class ResolverCommands(object):
                 api_models.Server.ip.in_(destinations)).all()
         known_destinations = set(
             map(lambda known: known.ip, known_destinations))
+
         new_destinations = destinations.difference(set(known_destinations))
         for destination in new_destinations:
             if "192.168.2." in destination:
                 continue
+            start = time.time()
             domain = dns_lookup.get_domain_for_ip(destination)
             location = dns_lookup.get_location_for_ip(destination)
             company = dns_lookup.get_company_for_domain(domain)
@@ -31,14 +34,12 @@ class ResolverCommands(object):
 
                 if company != None:
                     server_data['company'] = get_or_create(
-                        db.session, api_models.Company, name=company)
+                        db.session, api_models.Company, {"name":company})
                 if location != False:
                     server_data['location'] = get_or_create(
                         db.session, api_models.Location, location)
 
-                server_data['server_group_id'] = api_models.ServerQuery.find_server_group_id(
-                    domain, destination)
-
+                server_data['server_group_id'] = api_models.ServerQuery.find_server_group_id(destination, domain, company)
                 server = get_or_create(
                     db.session, api_models.Server, server_data)
                 if domain != False:

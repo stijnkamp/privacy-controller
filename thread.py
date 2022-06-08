@@ -18,7 +18,8 @@ class Thread(object):
         self.set_queue()
 
     def set_queue(self):
-
+        """Set the queue variable if it is available
+        """
         queue = self.state.get_queue(self._thread.name)
         if queue:
             self.queue = queue

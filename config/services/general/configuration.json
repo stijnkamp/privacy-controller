@@ -43,7 +43,7 @@
     "data_types": [
         {
             "slug": "any",
-            "name": "Any device",
+            "name": "Any data",
             "icon": "address-card"
         },
         {

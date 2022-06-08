@@ -86,6 +86,10 @@ def update_services_in_database(services):
         query = {'slug': server_group_data['slug']}
         model = web_helpers.get_input(['slug', 'name'], server_group_data)
         server_group = web_helpers.update_or_create(db.session, api_models.ServerGroup, query, model)
+        for server_query in server_group_data['queries']:
+          server_query['server_group_id'] = server_group.id
+          server_query = web_helpers.update_or_create(db.session, api_models.ServerQuery, server_query)
+          model = web_helpers.get_input(['slug', 'name'], server_group_data)
         server_groups[server_group_slug] = server_group
     
     for device_type_slug in device_types:
@@ -100,7 +104,7 @@ def update_services_in_database(services):
         for functionality_data in device_type['functionalities']:
             functionality_model = {
                 "device_type_id": device_type_models[device_type_slug].id,
-                "name": functionality["name"],
+                "name": functionality_data["name"],
             }
             functionality = web_helpers.update_or_create(db.session, api_models.Functionality, functionality_model)
             for service_data in functionality_data["services"]:
@@ -110,18 +114,18 @@ def update_services_in_database(services):
 def create_service(functionality, service, device_types, server_groups, data_types):
     service_data = {
         'slug': service['slug'],
-        'device_type_id': device_types[service['device_type']].id if (service['device_type'] and service['device_type'] in device_types) else None,
+        'device_type_id': device_types[service['device_type']].id if ('device_type' in service and service['device_type'] in device_types) else None,
         'server_group_id': server_groups[service['server_group']].id if ('server_group' in service and service['server_group'] in server_groups) else None,
         'cloud': 'server_group' in service and service['server_group'] != None
     }
     service_model = web_helpers.update_or_create(db.session, api_models.Service, service_data)
     for data in service['data']:
-        if data['trigger'] in data_types:
-            data["data_type_id"] = data_types[data['trigger']].id
-            service_model['service_id'] = service_model.id
-            data_data = web_helpers.get_input(['service_id', 'data_type_id', 'storage', 'trigger'])
+        if data['type'] in data_types:
+            data["data_type_id"] = data_types[data['type']].id
+            data['service_id'] = service_model.id
+            data_data = web_helpers.get_input(['service_id', 'data_type_id', 'storage', 'trigger'], data)
             data = web_helpers.update_or_create(db.session, api_models.ServiceData, data_data)
-    functionality.services.add(service)
+    functionality.services.append(service_model)
     db.session.commit()
     
 def copy_icon(device_alliance_slug, icon):

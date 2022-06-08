@@ -1,10 +1,15 @@
 .. _Resolver Service:
 
+================
 Resolver Service
 ================
+The resolver 
+
+General flow
+============
 
 Submodules
-----------
+==========
 
 resolver.dns\_lookup module
 ---------------------------
