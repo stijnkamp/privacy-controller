@@ -93,40 +93,6 @@
 <span id="id1"></span><h1><span class="section-number">5. </span>Websocket Service<a class="headerlink" href="#websocket-service" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="module-websocket">
 <span id="module-contents"></span><h2><span class="section-number">5.1. </span>Module contents<a class="headerlink" href="#module-websocket" title="Permalink to this headline">¶</a></h2>
-<dl class="py class">
-<dt id="websocket.Websocket">
-<em class="property">class </em><code class="sig-prename descclassname">websocket.</code><code class="sig-name descname">Websocket</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">state</span></em><span class="sig-paren">)</span><a class="headerlink" href="#websocket.Websocket" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../shared/thread.html#thread.Thread" title="thread.Thread"><code class="xref py py-class docutils literal notranslate"><span class="pre">thread.Thread</span></code></a></p>
-<p>Service to start a websocket which can send updated to the front-end in real-time.
-Clients can register to specific channels and it will get updates for those messages through a websocket.</p>
-<dl class="py method">
-<dt id="websocket.Websocket.check_for_stop">
-<em class="property">async </em><code class="sig-name descname">check_for_stop</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#websocket.Websocket.check_for_stop" title="Permalink to this definition">¶</a></dt>
-<dd><p>Keep running until thread is not active</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="websocket.Websocket.handler">
-<em class="property">async </em><code class="sig-name descname">handler</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">websocket</span></em>, <em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span><a class="headerlink" href="#websocket.Websocket.handler" title="Permalink to this definition">¶</a></dt>
-<dd><p>Handle a connection and dispatch it according to who is connecting.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>websocket</strong> (<em>WebsocketClient</em>) – The websocket client that just connected.</p></li>
-<li><p><strong>path</strong> (<em>str</em>) – The path to which the client subscribed</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="websocket.Websocket.notify_clients">
-<em class="property">async </em><code class="sig-name descname">notify_clients</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#websocket.Websocket.notify_clients" title="Permalink to this definition">¶</a></dt>
-<dd><p>Watch the queue and send message from queue to registered clients</p>
-</dd></dl>
-
-</dd></dl>
-
 </div>
 </div>
 

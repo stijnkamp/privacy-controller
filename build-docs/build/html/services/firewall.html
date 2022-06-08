@@ -112,24 +112,6 @@ Next it is waiting for a queue command to check again the devices and setup the 
 </div>
 <div class="section" id="module-firewall">
 <span id="classes-and-functions"></span><h2><span class="section-number">1.3. </span>Classes and functions<a class="headerlink" href="#module-firewall" title="Permalink to this headline">¶</a></h2>
-<dl class="py class">
-<dt id="firewall.Firewall">
-<em class="property">class </em><code class="sig-prename descclassname">firewall.</code><code class="sig-name descname">Firewall</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">state</span></em><span class="sig-paren">)</span><a class="headerlink" href="#firewall.Firewall" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../shared/thread.html#thread.Thread" title="thread.Thread"><code class="xref py py-class docutils literal notranslate"><span class="pre">thread.Thread</span></code></a></p>
-<p>Setup the Firewall thread</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>state</strong> (<a class="reference internal" href="../shared/state.html#state.State" title="state.State"><em>State</em></a>) – The shared state with other services</p>
-</dd>
-</dl>
-<dl class="py method">
-<dt id="firewall.Firewall.firewall_thread">
-<code class="sig-name descname">firewall_thread</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#firewall.Firewall.firewall_thread" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set up the starting firewall rules and wait for a task in the queue to be executed.</p>
-</dd></dl>
-
-</dd></dl>
-
 <div class="section" id="firewall-commands">
 <h3><span class="section-number">1.3.1. </span>Firewall commands<a class="headerlink" href="#firewall-commands" title="Permalink to this headline">¶</a></h3>
 <p>This class contains all the commands that can be done by putting them inside the Firewall queue</p>
