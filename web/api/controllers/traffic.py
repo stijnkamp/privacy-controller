@@ -61,6 +61,10 @@ class TrafficView(Controller):
             server_ips = server_ips.union(set(map(lambda server: server.ip, servers)))
         if ip_filter:
             traffic_query = traffic_query.filter(api_models.Traffic.dst.in_(server_ips))
+
+        devices = self.get_sources(traffic_query)
+        servers = self.get_destinations(traffic_query)
+
         traffic_query = traffic_query.group_by(getattr(api_models.Traffic, group_by), 'date_group')
         
         def parse_result(trafficData):
@@ -70,15 +74,14 @@ class TrafficView(Controller):
             traffic['size'] = trafficData['size_total']
             return traffic
         traffic = list(map(parse_result, traffic_query.all()))
-        devices = self.get_sources(traffic_query)
-        servers = self.get_destinations(traffic_query)
         return jsonify({'traffic': traffic, 'devices': devices, 'servers': servers})
 
     def get_sources(self, query):
         mac_addresses = query.group_by('src').all()
         mac_addresses = set(
             map(lambda traffic: traffic.Traffic.src, mac_addresses))
-        devices = pihole_models.PiHoleDevice.get_query().filter(
+        print(mac_addresses)
+        devices = pihole_models.PiHoleDevice.query.filter(
             pihole_models.PiHoleDevice.hwaddr.in_(mac_addresses)).all()
         devices = parse_model(devices)
 

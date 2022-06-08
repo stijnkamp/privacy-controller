@@ -36,7 +36,9 @@ class TcpDumpTracker(object):
         if not m:
             utils.log('[SKIP] ' + line.replace("\n", "\t"))
             return
-
+        if utils.is_ip4(m.group('src')) == False:
+            utils.log('[SKIP] {} is not a ip address'.format(m.group('src')))
+            return
         labels = {
             'src': None,
             'src_ip': m.group('src'),

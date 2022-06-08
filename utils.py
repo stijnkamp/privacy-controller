@@ -8,6 +8,7 @@ import re
 import mmap
 import contextlib
 import math
+import ipaddress
 
 
 def get_current_thread_name():
@@ -73,9 +74,8 @@ def is_ip4(address):
     Returns:
         bool: Boolean
     """
-    match = re.match(r"^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$", address)
-    return bool(match) is True
-
+    ip = ipaddress.ip_address(address)
+    return isinstance(ip, ipaddress.IPv4Address)
 
 def get_path(file):
     """retrieve absolute path from root directory

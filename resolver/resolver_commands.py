@@ -1,8 +1,8 @@
-import web
+from web import db
 import web.api.models as api_models
 from web.pihole import models as pihole_models
 from web.helpers import get_or_create
-import threading
+import multiprocessing
 import utils
 import time
 from resolver import dns_lookup
@@ -10,7 +10,7 @@ from resolver import dns_lookup
 
 class ResolverCommands(object):
     def __init__(self):
-        self._lock = threading.Lock()
+        self._lock = multiprocessing.Lock()
 
     def resolve_destinations(self, destinations):
         with self._lock:
@@ -48,12 +48,17 @@ class ResolverCommands(object):
                     db.session.commit()
     def resolve_sources(self, sources):
         for source in sources:
+            source = source.replace('ip-', '')
             with self._lock:
                 device_query = pihole_models.PiHoleDevice.query
                 found_device = device_query.join(pihole_models.PiHoleDevice.addresses).filter(pihole_models.NetworkAddress.ip == source).first()
                 if found_device:
                     db.session.query(api_models.Traffic).filter_by(src=source).update({api_models.Traffic.src: found_device.hwaddr})
                     db.session.commit()
+    def check_all_sources(self):
+        sources = db.session.query(api_models.Traffic.src).filter(api_models.Traffic.src.contains('192.168.2.')).group_by(api_models.Traffic.src).all()
+        sources = set(map(lambda traffic: traffic.src, sources))
+        self.resolve_sources(sources)
 
     def get(self, cmd):
         func = getattr(self, cmd)
