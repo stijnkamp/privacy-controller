@@ -1,10 +1,10 @@
 import utils
 import time
-from resolver import Resolver
+from resolver.thread import Resolver
 from web.web_server import WebServer
-from tracker import Tracker
-from websocket import Websocket
-from firewall import Firewall
+from tracker.thread import Tracker
+from websocket.thread import Websocket
+from firewall.thread import Firewall
 from state import State
 import startup
 

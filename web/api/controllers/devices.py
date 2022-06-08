@@ -51,9 +51,9 @@ class DevicesView(Controller):
     def new_devices(self):
         known_devices = api_models.Device.query.all()
         device_ids = [device.pihole_device_id for device in known_devices]
-        filter_local = pihole_models.PiHoleDevice.addresses.any(~pihole_models.NetworkAddress.ip.in_(['192.168.2.1', '192.168.2.2']))
+        filter_local = ~pihole_models.PiHoleDevice.addresses.any(pihole_models.NetworkAddress.ip.in_(['192.168.2.1', '192.168.2.2']))
         new_devices = pihole_models.PiHoleDevice.get_query().filter(
-            pihole_models.PiHoleDevice.id.notin_(device_ids)).all() #.filter(filter_local)
+            pihole_models.PiHoleDevice.id.notin_(device_ids)).filter(filter_local).all() #.filter(filter_local)
         return jsonify({'new_devices': new_devices})
 
     @route('/new/<id>', methods=['GET'])

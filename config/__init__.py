@@ -1,5 +1,5 @@
 import os
-import resolver.helpers as resolver_helpers
+from resolver.helpers import get_database_file
 import utils
 # Statement for enabling the development environment
 
@@ -13,7 +13,7 @@ flask = {
     'BASE_DIR': BASE_DIR,
     'SQLALCHEMY_DATABASE_URI': 'sqlite:///' + os.path.join(BASE_DIR, 'database.db'),
     'SQLALCHEMY_BINDS': {
-        'pihole': 'sqlite:///' + resolver_helpers.get_database_file()
+        'pihole': 'sqlite:///' + get_database_file()
     },
     'SQLALCHEMY_TRACK_MODIFICATIONS': False,
     'CSRF_ENABLED': True,
