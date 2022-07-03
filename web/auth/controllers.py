@@ -20,6 +20,12 @@ class AuthView(Controller):
 
     @route('/token', methods=['POST'])
     def token(self):
+        """Retrieve auth token by sending email address and password.
+        Endpoint: POST /auth/token
+
+        Returns:
+            JSON: A json object containing the token.
+        """
         requestData = request.json
         user = User.query.filter_by(email=requestData['email']).first()
 
@@ -35,5 +41,12 @@ class AuthView(Controller):
     @route('/me', methods=['GET'])
     @token_required(True)
     def me(self):
+        """Retrieve logged in user
+        Endpoint: GET /auth/me
+
+        Returns:
+            JSON: A json object with the logged in user
+        """
+
         return jsonify({'user': self.state.user})
         

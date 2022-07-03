@@ -14,6 +14,14 @@ class ServerGroupView(Controller):
     route_base = '/server-groups'
     @route('<id>', methods=['GET'])
     def get(self, id):
+        """Retrieve a specific servergroup including the servers, companies, location and possible abstractions that the server group can have. 
+        Endpoint: GET /server-groups/{id}
+        Args:
+            id (int): Server group ID
+
+        Returns:
+            JSON: A json object containing the server group details
+        """
         if id == 'unknown':
             servers = api_models.Server.query.filter(api_models.Server.server_group_id == None).all()
             unknown_server_group = {
@@ -24,11 +32,6 @@ class ServerGroupView(Controller):
         server_group = api_models.ServerGroup.query.get(id)
         response = parse_model(server_group)
         services = server_group.services
-        data_types = set()
-        for service in services:
-            data_types = data_types.union(set(map(lambda data: data.data_type_id, service.service_data)))
-        relation_filter = ~api_models.Abstraction.needed_data_types.any(~api_models.DataType.id.in_(data_types))
-        response['abstractions'] = api_models.Abstraction.query.filter(relation_filter).all()
         response['services'] = []
         response['servers'] = api_models.Server.query.filter(api_models.Server.server_group_id == id).all()
         for index, service in enumerate(services):

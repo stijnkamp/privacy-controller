@@ -15,7 +15,7 @@ def docs_redirect():
 
 @app.route('/docs/<path:file>')
 def docs(file):
-    return send_from_directory('../docs/build/html', file)
+    return send_from_directory('../docs', file)
 
 
 @app.route('/', defaults={'path': ''})

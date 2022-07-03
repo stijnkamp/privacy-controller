@@ -6,6 +6,12 @@ import resolver.resolver_commands as commands
 
 
 class Resolver(thread.Thread):
+    """Resolver service which takes queue command to resolve ip addresses to more elaborate information.
+    It also watches for new DHCP leases and updates the state with those DHCP leases. 
+
+    Args:
+        state (State): The shared state with other services
+    """
     def __init__(self, state):
         super().__init__('Resolver', state)
         self.commands = commands.ResolverCommands()
@@ -15,6 +21,8 @@ class Resolver(thread.Thread):
         utils.safe_run(self._resolver_thread)
 
     def get_dhcp_leases(self):
+        """Get the dhcp leases and store it in the state.
+        """
         dhcp_leases_ip, dhcp_leases_addr = resolver_helpers.get_dhcp_leases()
 
         self.state.dhcp_leases_ip.update(dhcp_leases_ip)

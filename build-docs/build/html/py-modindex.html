@@ -18,10 +18,6 @@
     <link rel="search" title="Search" href="search.html" />
  
 
-    <script>
-      DOCUMENTATION_OPTIONS.COLLAPSE_INDEX = true;
-    </script>
-
 
 </head>
 
@@ -44,6 +40,11 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="index.html">Welcome to PrivateHome’s documentation!</a></li>
 </ul>
+<p class="caption"><span class="caption-text">Repositories</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/stijnkamp/privacy-controller">Controller repository</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/stijnkamp/privacy-control-interface">Vue frontend repository</a></li>
+</ul>
 <p class="caption"><span class="caption-text">Installation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="installation/hardware.html">1. Hardware installation</a></li>
@@ -62,10 +63,10 @@
 </ul>
 <p class="caption"><span class="caption-text">Services</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="services/firewall.html">1. Firewall Service</a></li>
-<li class="toctree-l1"><a class="reference internal" href="services/resolver.html">2. Resolver Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="services/web.html">1. Web Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="services/firewall.html">2. Firewall Service</a></li>
 <li class="toctree-l1"><a class="reference internal" href="services/tracker.html">3. Tracker Service</a></li>
-<li class="toctree-l1"><a class="reference internal" href="services/web.html">4. Web Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="services/resolver.html">4. Resolver Service</a></li>
 <li class="toctree-l1"><a class="reference internal" href="services/websocket.html">5. Websocket Service</a></li>
 </ul>
 
@@ -112,9 +113,20 @@
      <tr class="cap" id="cap-b"><td></td><td>
        <strong>b</strong></td><td></td></tr>
      <tr>
-       <td></td>
+       <td><img src="_static/minus.png" class="toggler"
+              id="toggle-1" style="display: none" alt="-" /></td>
        <td>
-       <a href="start_scripts/benchmark.html#module-benchmark"><code class="xref">benchmark</code></a></td><td>
+       <code class="xref">benchmarks</code></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="start_scripts/benchmark.html#module-benchmarks.raw_send"><code class="xref">benchmarks.raw_send</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="start_scripts/benchmark.html#module-benchmarks.wetransfer"><code class="xref">benchmarks.wetransfer</code></a></td><td>
        <em></em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
      <tr class="cap" id="cap-c"><td></td><td>
@@ -129,16 +141,16 @@
        <strong>f</strong></td><td></td></tr>
      <tr>
        <td><img src="_static/minus.png" class="toggler"
-              id="toggle-1" style="display: none" alt="-" /></td>
+              id="toggle-2" style="display: none" alt="-" /></td>
        <td>
        <a href="services/firewall.html#module-firewall"><code class="xref">firewall</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-1">
+     <tr class="cg-2">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="services/firewall.html#module-firewall.firewall_commands"><code class="xref">firewall.firewall_commands</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-1">
+     <tr class="cg-2">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="services/firewall.html#module-firewall.rule_parser"><code class="xref">firewall.rule_parser</code></a></td><td>
@@ -156,21 +168,16 @@
        <strong>r</strong></td><td></td></tr>
      <tr>
        <td><img src="_static/minus.png" class="toggler"
-              id="toggle-2" style="display: none" alt="-" /></td>
+              id="toggle-3" style="display: none" alt="-" /></td>
        <td>
-       <a href="services/resolver.html#module-resolver"><code class="xref">resolver</code></a></td><td>
+       <code class="xref">resolver</code></td><td>
        <em></em></td></tr>
-     <tr class="cg-2">
+     <tr class="cg-3">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="services/resolver.html#module-resolver.dns_lookup"><code class="xref">resolver.dns_lookup</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-2">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="services/resolver.html#module-resolver.helpers"><code class="xref">resolver.helpers</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-2">
+     <tr class="cg-3">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="services/resolver.html#module-resolver.resolver_commands"><code class="xref">resolver.resolver_commands</code></a></td><td>
@@ -193,19 +200,24 @@
        <em></em></td></tr>
      <tr>
        <td><img src="_static/minus.png" class="toggler"
-              id="toggle-3" style="display: none" alt="-" /></td>
+              id="toggle-4" style="display: none" alt="-" /></td>
        <td>
-       <a href="services/tracker.html#module-tracker"><code class="xref">tracker</code></a></td><td>
+       <code class="xref">tracker</code></td><td>
        <em></em></td></tr>
-     <tr class="cg-3">
+     <tr class="cg-4">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="services/tracker.html#module-tracker.scapy_tracker"><code class="xref">tracker.scapy_tracker</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-3">
+     <tr class="cg-4">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="services/tracker.html#module-tracker.tcp_dump_tracker"><code class="xref">tracker.tcp_dump_tracker</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-4">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="services/tracker.html#module-tracker.thread"><code class="xref">tracker.thread</code></a></td><td>
        <em></em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
      <tr class="cap" id="cap-u"><td></td><td>
@@ -220,29 +232,55 @@
        <strong>w</strong></td><td></td></tr>
      <tr>
        <td><img src="_static/minus.png" class="toggler"
-              id="toggle-4" style="display: none" alt="-" /></td>
+              id="toggle-5" style="display: none" alt="-" /></td>
        <td>
-       <a href="services/web.html#module-web"><code class="xref">web</code></a></td><td>
+       <code class="xref">web</code></td><td>
        <em></em></td></tr>
-     <tr class="cg-4">
+     <tr class="cg-5">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="services/web.html#module-web.controller"><code class="xref">web.controller</code></a></td><td>
+       <a href="services/web.html#module-web.api.controllers.devices"><code class="xref">web.api.controllers.devices</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-4">
+     <tr class="cg-5">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="services/web.html#module-web.api.controllers.server_group"><code class="xref">web.api.controllers.server_group</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-5">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="services/web.html#module-web.api.controllers.traffic"><code class="xref">web.api.controllers.traffic</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-5">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="services/web.html#module-web.auth.controllers"><code class="xref">web.auth.controllers</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-5">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="services/web.html#module-web.auth.helpers"><code class="xref">web.auth.helpers</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-5">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="services/web.html#module-web.helpers"><code class="xref">web.helpers</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-4">
+     <tr class="cg-5">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="services/web.html#module-web.web_server"><code class="xref">web.web_server</code></a></td><td>
        <em></em></td></tr>
      <tr>
-       <td></td>
+       <td><img src="_static/minus.png" class="toggler"
+              id="toggle-6" style="display: none" alt="-" /></td>
        <td>
-       <a href="services/websocket.html#module-websocket"><code class="xref">websocket</code></a></td><td>
+       <code class="xref">websocket</code></td><td>
+       <em></em></td></tr>
+     <tr class="cg-6">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="services/websocket.html#module-websocket.thread"><code class="xref">websocket.thread</code></a></td><td>
        <em></em></td></tr>
    </table>
 

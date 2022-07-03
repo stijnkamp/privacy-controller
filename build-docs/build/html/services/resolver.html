@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>2. Resolver Service &mdash; PrivateHome 1.0 documentation</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <title>4. Resolver Service &mdash; PrivateHome 1.0 documentation</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -16,8 +16,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="3. Tracker Service" href="tracker.html" />
-    <link rel="prev" title="1. Firewall Service" href="firewall.html" /> 
+    <link rel="next" title="5. Websocket Service" href="websocket.html" />
+    <link rel="prev" title="3. Tracker Service" href="tracker.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -39,6 +39,11 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../index.html">Welcome to PrivateHome’s documentation!</a></li>
 </ul>
+<p class="caption"><span class="caption-text">Repositories</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/stijnkamp/privacy-controller">Controller repository</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/stijnkamp/privacy-control-interface">Vue frontend repository</a></li>
+</ul>
 <p class="caption"><span class="caption-text">Installation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation/hardware.html">1. Hardware installation</a></li>
@@ -57,20 +62,14 @@
 </ul>
 <p class="caption"><span class="caption-text">Services</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="firewall.html">1. Firewall Service</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">2. Resolver Service</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#general-flow">2.1. General flow</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#submodules">2.2. Submodules</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#module-resolver.dns_lookup">2.2.1. resolver.dns_lookup module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#module-resolver.helpers">2.2.2. resolver.helpers module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#module-resolver.resolver_commands">2.2.3. resolver.resolver_commands module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#module-resolver">2.2.4. Module contents</a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="web.html">1. Web Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="firewall.html">2. Firewall Service</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tracker.html">3. Tracker Service</a></li>
-<li class="toctree-l1"><a class="reference internal" href="web.html">4. Web Service</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">4. Resolver Service</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-resolver.dns_lookup">4.1. Resolvers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#queue-commands">4.2. Queue commands</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="websocket.html">5. Websocket Service</a></li>
 </ul>
 
@@ -88,7 +87,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-      <li><span class="section-number">2. </span>Resolver Service</li>
+      <li><span class="section-number">4. </span>Resolver Service</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -98,69 +97,111 @@
            <div itemprop="articleBody">
              
   <div class="section" id="resolver-service">
-<span id="id1"></span><h1><span class="section-number">2. </span>Resolver Service<a class="headerlink" href="#resolver-service" title="Permalink to this headline">¶</a></h1>
-<p>The resolver</p>
-<div class="section" id="general-flow">
-<h2><span class="section-number">2.1. </span>General flow<a class="headerlink" href="#general-flow" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="submodules">
-<h2><span class="section-number">2.2. </span>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+<span id="id1"></span><h1><span class="section-number">4. </span>Resolver Service<a class="headerlink" href="#resolver-service" title="Permalink to this headline">¶</a></h1>
+<p>The primary responsibility of the resolver service is to investigate specific IP addresses. To which
+device do they belong in the local network, or to which server group does it belong in the cloud
+network. It retrieves information about server locations, domain names, and companies behind
+the domain names.</p>
 <div class="section" id="module-resolver.dns_lookup">
-<span id="resolver-dns-lookup-module"></span><h3><span class="section-number">2.2.1. </span>resolver.dns_lookup module<a class="headerlink" href="#module-resolver.dns_lookup" title="Permalink to this headline">¶</a></h3>
+<span id="resolvers"></span><h2><span class="section-number">4.1. </span>Resolvers<a class="headerlink" href="#module-resolver.dns_lookup" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="resolver.dns_lookup.batch_location_for_ip">
+<code class="sig-prename descclassname">resolver.dns_lookup.</code><code class="sig-name descname">batch_location_for_ip</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">addresses</span></em><span class="sig-paren">)</span><a class="headerlink" href="#resolver.dns_lookup.batch_location_for_ip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve batch of locations for multiple IPv4 addresses at once using the ipinfo.io. Caution: this service stores your requests for other purposes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>addresses</strong> (<em>str</em><em>[</em><em>]</em>) – A list of IPv4 addresses</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of the found locations.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict[]</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py function">
 <dt id="resolver.dns_lookup.get_company_for_domain">
 <code class="sig-prename descclassname">resolver.dns_lookup.</code><code class="sig-name descname">get_company_for_domain</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">domain</span></em><span class="sig-paren">)</span><a class="headerlink" href="#resolver.dns_lookup.get_company_for_domain" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Find the organization that registered the domain using Whois. It first removes all subdomains from the domain.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>domain</strong> (<em>str</em>) – A registered domain</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Company name if present, otherwise None</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt id="resolver.dns_lookup.get_domain_for_ip">
 <code class="sig-prename descclassname">resolver.dns_lookup.</code><code class="sig-name descname">get_domain_for_ip</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ip</span></em><span class="sig-paren">)</span><a class="headerlink" href="#resolver.dns_lookup.get_domain_for_ip" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Get domain of ip by first looking at the pihole logs to resolve a domain. If not found the ip address if found using the socket library.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ip</strong> (<em>str</em>) – IPv4 address to find a domain for</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>First domain that is connected to the IP address</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt id="resolver.dns_lookup.get_location_for_ip">
 <code class="sig-prename descclassname">resolver.dns_lookup.</code><code class="sig-name descname">get_location_for_ip</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ip</span></em><span class="sig-paren">)</span><a class="headerlink" href="#resolver.dns_lookup.get_location_for_ip" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Retrieve location of a specific IPv4 address using ip-api.com</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ip</strong> (<em>str</em>) – IPv4 address to find a domain for</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The location including city, region, country and coordinates.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt id="resolver.dns_lookup.reverse_dns">
 <code class="sig-prename descclassname">resolver.dns_lookup.</code><code class="sig-name descname">reverse_dns</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ip</span></em><span class="sig-paren">)</span><a class="headerlink" href="#resolver.dns_lookup.reverse_dns" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Get domain using reverse dns lookup using the socket package</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ip</strong> (<em>str</em>) – IPv4 address to find a domain for</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>First domain that is connected to the IP address</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
 
 </div>
-<div class="section" id="module-resolver.helpers">
-<span id="resolver-helpers-module"></span><h3><span class="section-number">2.2.2. </span>resolver.helpers module<a class="headerlink" href="#module-resolver.helpers" title="Permalink to this headline">¶</a></h3>
-<dl class="py function">
-<dt id="resolver.helpers.get_database_file">
-<code class="sig-prename descclassname">resolver.helpers.</code><code class="sig-name descname">get_database_file</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#resolver.helpers.get_database_file" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt id="resolver.helpers.get_dhcp_leases">
-<code class="sig-prename descclassname">resolver.helpers.</code><code class="sig-name descname">get_dhcp_leases</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#resolver.helpers.get_dhcp_leases" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt id="resolver.helpers.get_own_hwaddr">
-<code class="sig-prename descclassname">resolver.helpers.</code><code class="sig-name descname">get_own_hwaddr</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#resolver.helpers.get_own_hwaddr" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt id="resolver.helpers.get_pihole_config">
-<code class="sig-prename descclassname">resolver.helpers.</code><code class="sig-name descname">get_pihole_config</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#resolver.helpers.get_pihole_config" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</div>
-<div class="section" id="module-resolver.resolver_commands">
-<span id="resolver-resolver-commands-module"></span><h3><span class="section-number">2.2.3. </span>resolver.resolver_commands module<a class="headerlink" href="#module-resolver.resolver_commands" title="Permalink to this headline">¶</a></h3>
-<dl class="py class">
+<div class="section" id="queue-commands">
+<h2><span class="section-number">4.2. </span>Queue commands<a class="headerlink" href="#queue-commands" title="Permalink to this headline">¶</a></h2>
+<p>The resolver service waits till there is a command in the queue. There are multiple commands posisble inside the resolver service listed below.</p>
+<span class="target" id="module-resolver.resolver_commands"></span><dl class="py class">
 <dt id="resolver.resolver_commands.ResolverCommands">
 <em class="property">class </em><code class="sig-prename descclassname">resolver.resolver_commands.</code><code class="sig-name descname">ResolverCommands</code><a class="headerlink" href="#resolver.resolver_commands.ResolverCommands" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py method">
 <dt id="resolver.resolver_commands.ResolverCommands.check_all_sources">
 <code class="sig-name descname">check_all_sources</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#resolver.resolver_commands.ResolverCommands.check_all_sources" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Retrieve all sources from database which are not yet resolved</p>
+</dd></dl>
 
 <dl class="py method">
 <dt id="resolver.resolver_commands.ResolverCommands.get">
@@ -170,19 +211,29 @@
 <dl class="py method">
 <dt id="resolver.resolver_commands.ResolverCommands.resolve_destinations">
 <code class="sig-name descname">resolve_destinations</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">destinations</span></em><span class="sig-paren">)</span><a class="headerlink" href="#resolver.resolver_commands.ResolverCommands.resolve_destinations" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Resolve all new IPv4 addresses that were not already resolved by the service.
+It ignores the local ip addresses and finds the domain, location, company and server group.
+It stores the resolved destination into the database</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>destinations</strong> (<em>str</em><em>[</em><em>]</em>) – A set of IPv4 addresses</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="resolver.resolver_commands.ResolverCommands.resolve_sources">
 <code class="sig-name descname">resolve_sources</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sources</span></em><span class="sig-paren">)</span><a class="headerlink" href="#resolver.resolver_commands.ResolverCommands.resolve_sources" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Get mac addresses for the ip sources which have sent packets</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>sources</strong> (<em>str</em><em>[</em><em>]</em>) – local device IPv4 addresses</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
-</div>
-<div class="section" id="module-resolver">
-<span id="module-contents"></span><h3><span class="section-number">2.2.4. </span>Module contents<a class="headerlink" href="#module-resolver" title="Permalink to this headline">¶</a></h3>
-</div>
 </div>
 </div>
 
@@ -190,8 +241,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="firewall.html" class="btn btn-neutral float-left" title="1. Firewall Service" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="tracker.html" class="btn btn-neutral float-right" title="3. Tracker Service" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="tracker.html" class="btn btn-neutral float-left" title="3. Tracker Service" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="websocket.html" class="btn btn-neutral float-right" title="5. Websocket Service" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

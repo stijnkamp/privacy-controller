@@ -22,6 +22,13 @@ def optional_arg_decorator(fn):
 
 @optional_arg_decorator
 def token_required(f, get_user=None):
+    """A decorator to check if the token is valid and add the user to the shared state. 
+
+    Args:
+        f (def): The function itself
+        get_user (bool, optional): If it should also get the logged in user. Defaults to None.
+
+    """
     @wraps(f)
     def decorator(*args, **kwargs):
         token = None

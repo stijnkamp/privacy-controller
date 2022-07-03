@@ -2,6 +2,7 @@ import utils
 import config
 import os
 import shutil
+import subprocess
 from web import helpers as web_helpers
 from web import db
 import web.api.models as api_models
@@ -11,6 +12,7 @@ def setup():
     utils.log("Setting up all services")
     utils.log("Set hostname to {}.local".format(config.hostname))
     set_hostname(config.hostname)
+    enable_ip_forwarding()
     services = config.get_services()
     update_services_in_database(services)
 
@@ -19,44 +21,8 @@ def update_services_in_database(services):
     data_types = {}
     device_types = {}
     device_type_models = {}
-    {
-      "slug": "bridge",
-      "name": "Philips Hue Bridge",
-      "icon": "hue_bridge.png",
-      "functionalities": [
-        {
-          "name": "Control using the dedicated app",
-          "services": [
-            {
-              "slug": "send_status_to_hue_cloud",
-              "server_group": "philips.philips_hue_servers",
-              "data": [
-                {
-                  "type": "philips.lamp_status",
-                  "trigger": "Every 10 seconds"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "name": "Control by Google Voice Command",
-          "services": [
-            {
-              "slug": "send_status_to_google_servers",
-              "server_group": "philips.philips_hue_servers",
-              "data": [
-                {
-                  "type": "philips.lamp_status",
-                  "trigger": "Every 10 seconds"
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    }
     # server_groups = [web_helpers.get_input(['name', 'slug'], service_alliance.server_groups) for service_alliance in services]
+    # Retrieve all needed entities for each service
     for service_alliance in services:
         if 'data_types' in service_alliance:
             for data_type in service_alliance['data_types']:
@@ -73,14 +39,14 @@ def update_services_in_database(services):
                 device_type['slug'] = f'{service_alliance["slug"]}.{device_type["slug"]}'
                 device_type['icon'] = copy_icon(service_alliance['slug'], device_type['icon'])
                 device_types[device_type['slug']] = device_type
-    
+    #Add data types to database
     for data_type_slug in data_types:
         data_type_data = data_types[data_type_slug]
         query = {'slug': data_type_data['slug']}
         model = web_helpers.get_input(['slug', 'name', 'icon'], data_type_data)
         data_type = web_helpers.update_or_create(db.session, api_models.DataType, query, model)
         data_types[data_type_slug] = data_type
-    
+    #Add server groups to database
     for server_group_slug in server_groups:
         server_group_data = server_groups[server_group_slug]
         query = {'slug': server_group_data['slug']}
@@ -88,17 +54,16 @@ def update_services_in_database(services):
         server_group = web_helpers.update_or_create(db.session, api_models.ServerGroup, query, model)
         for server_query in server_group_data['queries']:
           server_query['server_group_id'] = server_group.id
-          server_query = web_helpers.update_or_create(db.session, api_models.ServerQuery, server_query)
-          model = web_helpers.get_input(['slug', 'name'], server_group_data)
+          web_helpers.update_or_create(db.session, api_models.ServerQuery, server_query)
         server_groups[server_group_slug] = server_group
-    
+    #Add device types to database
     for device_type_slug in device_types:
         device_type_data = device_types[device_type_slug]
         query = {'slug': device_type_data['slug']}
         model = web_helpers.get_input(['slug', 'name', 'icon'], device_type_data)
         device_type = web_helpers.update_or_create(db.session, api_models.DeviceType, query, model)
         device_type_models[device_type_slug] = device_type
-    
+    #add functionalities to database
     for device_type_slug in device_types:
         device_type = device_types[device_type_slug]
         for functionality_data in device_type['functionalities']:
@@ -108,10 +73,19 @@ def update_services_in_database(services):
             }
             functionality = web_helpers.update_or_create(db.session, api_models.Functionality, functionality_model)
             for service_data in functionality_data["services"]:
-                create_service(functionality, service_data, device_types, server_groups, data_types)
+                create_service(functionality, service_data, device_type_models, server_groups, data_types)
 
         
 def create_service(functionality, service, device_types, server_groups, data_types):
+    """Add service to database
+
+    Args:
+        functionality (Functionality): Functionality to add the service to
+        service (dict): Service data to be added to the database
+        device_types (DeviceType[]): The device type models
+        server_groups (ServerGroup[]): The server group models
+        data_types (DataType[]): The data type models
+    """
     service_data = {
         'slug': service['slug'],
         'device_type_id': device_types[service['device_type']].id if ('device_type' in service and service['device_type'] in device_types) else None,
@@ -164,3 +138,6 @@ def set_hostname(hostname):
         file.writelines( data )
 
     os.system('sudo mv temp.txt /etc/hostname')
+def enable_ip_forwarding():
+    cmd = ['sysctl', '-w', 'net.ipv4.ip_forward=1']
+    assert subprocess.call(cmd) == 0

@@ -20,6 +20,21 @@
               ]
             }
           ]
+        },
+        {
+          "name": "Control using Home Assistant",
+          "services": [
+            {
+              "slug": "home_assistant",
+              "device_type": "home_assistant.controller",
+              "data": [
+                {
+                  "type": "general.device_data",
+                  "trigger": "Every 10 seconds"
+                }
+              ]
+            }
+          ]
         }
       ]
     }

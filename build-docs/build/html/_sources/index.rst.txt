@@ -60,6 +60,14 @@ Here you can control the entire application add new discovered devices and inves
    
    self
 
+Repositories
+============
+.. toctree::
+   :caption: Repositories
+   
+   Controller repository <https://github.com/stijnkamp/privacy-controller>
+   Vue frontend repository <https://github.com/stijnkamp/privacy-control-interface>
+
 Installation
 =============
 We separate the installation between the hardware setup and the software setup.
@@ -105,8 +113,8 @@ Services
    :numbered:
    :caption: Services
    
-   services/firewall
-   services/resolver
-   services/tracker
    services/web
+   services/firewall
+   services/tracker
+   services/resolver
    services/websocket

@@ -27,11 +27,24 @@ service_matcher = re.compile('(?P<service>\w+)\s*(?P<port>\d+)/(?P<proto>\w+)')
 
 
 class TcpDumpTracker(object):
+    """Track packets using the tcpdump command line results.
+
+    Args:
+         state (State): The shared state with other services
+    """
     def __init__(self, state):
         self.state = state
     # Helper for building regex.
 
     def parse_packet(self, line):
+        """Translate the command line output to the correct dictionary.
+
+        Args:
+            line (str): Command line output line from tcpdump
+
+        Returns:
+            dict: The packet including, source, destination, protocol, port and size.
+        """
         m = tcpdump_matcher.match(line)
         if not m:
             utils.log('[SKIP] ' + line.replace("\n", "\t"))
@@ -54,6 +67,12 @@ class TcpDumpTracker(object):
         # db.session.commit()
 
     async def start(self, packet_handler, filter='src net 192.168.2.0/24 and not port ssh'):
+        """Start the tracker for a specific filter according to the tcpdump filtering system
+
+        Args:
+            packet_handler (def): The handler callback function
+            filter (str, optional): The filter string used inside the tcpdump command. Defaults to 'src net 192.168.2.0/24 and not port ssh'.
+        """
         p = await asyncio.create_subprocess_exec(
             'tcpdump', '-i', 'eth1', '-v', '-n', '-l', filter,
             stdout=asyncio.subprocess.PIPE)

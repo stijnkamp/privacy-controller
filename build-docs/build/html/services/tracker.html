@@ -16,8 +16,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="4. Web Service" href="web.html" />
-    <link rel="prev" title="2. Resolver Service" href="resolver.html" /> 
+    <link rel="next" title="4. Resolver Service" href="resolver.html" />
+    <link rel="prev" title="2. Firewall Service" href="firewall.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -39,6 +39,11 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../index.html">Welcome to PrivateHome’s documentation!</a></li>
 </ul>
+<p class="caption"><span class="caption-text">Repositories</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/stijnkamp/privacy-controller">Controller repository</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/stijnkamp/privacy-control-interface">Vue frontend repository</a></li>
+</ul>
 <p class="caption"><span class="caption-text">Installation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation/hardware.html">1. Hardware installation</a></li>
@@ -57,16 +62,18 @@
 </ul>
 <p class="caption"><span class="caption-text">Services</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="firewall.html">1. Firewall Service</a></li>
-<li class="toctree-l1"><a class="reference internal" href="resolver.html">2. Resolver Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="web.html">1. Web Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="firewall.html">2. Firewall Service</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">3. Tracker Service</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#submodules">3.1. Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-tracker.scapy_tracker">3.2. tracker.scapy_tracker module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-tracker.tcp_dump_tracker">3.3. tracker.tcp_dump_tracker module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-tracker">3.4. Module contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#main-thread">3.1. Main thread</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tracker-options">3.2. Tracker options</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-tracker.tcp_dump_tracker">3.2.1. Tcpdump tracker</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-tracker.scapy_tracker">3.2.2. Scapy tracker</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="web.html">4. Web Service</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="resolver.html">4. Resolver Service</a></li>
 <li class="toctree-l1"><a class="reference internal" href="websocket.html">5. Websocket Service</a></li>
 </ul>
 
@@ -95,48 +102,110 @@
              
   <div class="section" id="tracker-service">
 <span id="id1"></span><h1><span class="section-number">3. </span>Tracker Service<a class="headerlink" href="#tracker-service" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="submodules">
-<h2><span class="section-number">3.1. </span>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="module-tracker.scapy_tracker">
-<span id="tracker-scapy-tracker-module"></span><h2><span class="section-number">3.2. </span>tracker.scapy_tracker module<a class="headerlink" href="#module-tracker.scapy_tracker" title="Permalink to this headline">¶</a></h2>
-<dl class="py class">
-<dt id="tracker.scapy_tracker.ScapyTracker">
-<em class="property">class </em><code class="sig-prename descclassname">tracker.scapy_tracker.</code><code class="sig-name descname">ScapyTracker</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">state</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tracker.scapy_tracker.ScapyTracker" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The tracker service retrieves data communication to inform the user about data flows. It can track
+the size of packets sent from every local device to which server, using which protocol over which
+port.</p>
+<div class="section" id="main-thread">
+<h2><span class="section-number">3.1. </span>Main thread<a class="headerlink" href="#main-thread" title="Permalink to this headline">¶</a></h2>
+<p>The main thread setups the tracker to use and stores it into the database using the Traffic model.
+Not every packet can be inserted into the database as separate packets
+because the system will overflow in memory. The packets are combined in groups to limit the
+number of records in the database but still store the needed details. Every minute all collected
+groups from the previous minute will be uploaded to the database in bulk. Groups will be created
+based on source, destination, protocol, and service. If it is not needed to store destination, protocol,
+or service, the configurations can be changed in the config file. After the records are uploaded to
+the database, unknown IP addresses are added to the queue to be handled by the resolver service.</p>
+<span class="target" id="module-tracker.thread"></span><dl class="py class">
+<dt id="tracker.thread.Tracker">
+<em class="property">class </em><code class="sig-prename descclassname">tracker.thread.</code><code class="sig-name descname">Tracker</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">state</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tracker.thread.Tracker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../shared/thread.html#thread.Thread" title="thread.Thread"><code class="xref py py-class docutils literal notranslate"><span class="pre">thread.Thread</span></code></a></p>
+<p>Tracker service which retrieves packets from the eth1 interface and handles them accordingly.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>state</strong> (<a class="reference internal" href="../shared/state.html#state.State" title="state.State"><em>State</em></a>) – The shared state with other services</p>
+</dd>
+</dl>
 <dl class="py method">
-<dt id="tracker.scapy_tracker.ScapyTracker.get_packet_size">
-<code class="sig-name descname">get_packet_size</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">p</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tracker.scapy_tracker.ScapyTracker.get_packet_size" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt id="tracker.thread.Tracker.getPacketKey">
+<code class="sig-name descname">getPacketKey</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">packet</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tracker.thread.Tracker.getPacketKey" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve a unique key for the specific packet to know to which group it needs to add to.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>packet</strong> (<em>dict</em>) – The packet</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The packet group unique key</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
-<dt id="tracker.scapy_tracker.ScapyTracker.parse_packet">
-<code class="sig-name descname">parse_packet</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pkt</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tracker.scapy_tracker.ScapyTracker.parse_packet" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="tracker.scapy_tracker.ScapyTracker.start">
-<em class="property">async </em><code class="sig-name descname">start</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">packet_handler</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tracker.scapy_tracker.ScapyTracker.start" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt id="tracker.thread.Tracker.packet_handler">
+<code class="sig-name descname">packet_handler</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">packet</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tracker.thread.Tracker.packet_handler" title="Permalink to this definition">¶</a></dt>
+<dd><p>The packet handler function after a packet is retrieved using the predefined tracker.
+It retrieves the other information using the resolver service and adds it to the database every</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>packet</strong> (<em>dict</em>) – The retrieved packet from the tracker</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
 </div>
+<div class="section" id="tracker-options">
+<h2><span class="section-number">3.2. </span>Tracker options<a class="headerlink" href="#tracker-options" title="Permalink to this headline">¶</a></h2>
+<p>There are two packages that can retrieve the packets that will be forwarded, namely using Tcpdump and Scapy. Only
+packets are tracked that go from the local network, so no incoming messages from the cloud. This
+is done explicitly since the tool is about sharing personal data instead of retrieving data. The
+command line output will be parsed using a regex matcher, which retrieves the needed information
+from the package.</p>
 <div class="section" id="module-tracker.tcp_dump_tracker">
-<span id="tracker-tcp-dump-tracker-module"></span><h2><span class="section-number">3.3. </span>tracker.tcp_dump_tracker module<a class="headerlink" href="#module-tracker.tcp_dump_tracker" title="Permalink to this headline">¶</a></h2>
+<span id="tcpdump-tracker"></span><h3><span class="section-number">3.2.1. </span>Tcpdump tracker<a class="headerlink" href="#module-tracker.tcp_dump_tracker" title="Permalink to this headline">¶</a></h3>
 <dl class="py class">
 <dt id="tracker.tcp_dump_tracker.TcpDumpTracker">
 <em class="property">class </em><code class="sig-prename descclassname">tracker.tcp_dump_tracker.</code><code class="sig-name descname">TcpDumpTracker</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">state</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tracker.tcp_dump_tracker.TcpDumpTracker" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Track packets using the tcpdump command line results.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>state</strong> (<a class="reference internal" href="../shared/state.html#state.State" title="state.State"><em>State</em></a>) – The shared state with other services</p>
+</dd>
+</dl>
 <dl class="py method">
 <dt id="tracker.tcp_dump_tracker.TcpDumpTracker.parse_packet">
 <code class="sig-name descname">parse_packet</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">line</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tracker.tcp_dump_tracker.TcpDumpTracker.parse_packet" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Translate the command line output to the correct dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>line</strong> (<em>str</em>) – Command line output line from tcpdump</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The packet including, source, destination, protocol, port and size.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="tracker.tcp_dump_tracker.TcpDumpTracker.start">
 <em class="property">async </em><code class="sig-name descname">start</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">packet_handler</span></em>, <em class="sig-param"><span class="n">filter</span><span class="o">=</span><span class="default_value">'src net 192.168.2.0/24 and not port ssh'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tracker.tcp_dump_tracker.TcpDumpTracker.start" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Start the tracker for a specific filter according to the tcpdump filtering system</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>packet_handler</strong> (<em>def</em>) – The handler callback function</p></li>
+<li><p><strong>filter</strong> (<em>str</em><em>, </em><em>optional</em>) – The filter string used inside the tcpdump command. Defaults to ‘src net 192.168.2.0/24 and not port ssh’.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -146,8 +215,60 @@
 <dd></dd></dl>
 
 </div>
-<div class="section" id="module-tracker">
-<span id="module-contents"></span><h2><span class="section-number">3.4. </span>Module contents<a class="headerlink" href="#module-tracker" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-tracker.scapy_tracker">
+<span id="scapy-tracker"></span><h3><span class="section-number">3.2.2. </span>Scapy tracker<a class="headerlink" href="#module-tracker.scapy_tracker" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt id="tracker.scapy_tracker.ScapyTracker">
+<em class="property">class </em><code class="sig-prename descclassname">tracker.scapy_tracker.</code><code class="sig-name descname">ScapyTracker</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">state</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tracker.scapy_tracker.ScapyTracker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Track packets using the sniffer from the scapy library.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>state</strong> (<a class="reference internal" href="../shared/state.html#state.State" title="state.State"><em>State</em></a>) – The shared state with other services</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="tracker.scapy_tracker.ScapyTracker.get_packet_size">
+<code class="sig-name descname">get_packet_size</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">p</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tracker.scapy_tracker.ScapyTracker.get_packet_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get size of content packet by looking at protocol and remove headers</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>p</strong> (<em>ScapyPacket</em>) – A complete scapy packet from the sniffer</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Size of content in bytes</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tracker.scapy_tracker.ScapyTracker.parse_packet">
+<code class="sig-name descname">parse_packet</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pkt</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tracker.scapy_tracker.ScapyTracker.parse_packet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Translate a scapy packet to the formated dict</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>pkt</strong> (<em>ScapyPacket</em>) – A complete scapy packet from the sniffer</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tracker.scapy_tracker.ScapyTracker.start">
+<em class="property">async </em><code class="sig-name descname">start</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">packet_handler</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tracker.scapy_tracker.ScapyTracker.start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start the thread and send all received packets to the packet handler</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>packet_handler</strong> (<em>def</em>) – The handler callback function</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
 </div>
 </div>
 
@@ -155,8 +276,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="resolver.html" class="btn btn-neutral float-left" title="2. Resolver Service" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="web.html" class="btn btn-neutral float-right" title="4. Web Service" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="firewall.html" class="btn btn-neutral float-left" title="2. Firewall Service" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="resolver.html" class="btn btn-neutral float-right" title="4. Resolver Service" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

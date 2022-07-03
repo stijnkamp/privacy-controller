@@ -15,6 +15,12 @@ class TrafficView(Controller):
 
     @route('', methods=['POST'])
     def index(self):
+        """Get traffic information with speficic filters, where to group by and which time period. \n
+        Endpoint: POST /traffic
+
+        Returns:
+            JSON: a json object containing the traffic per timespan, including the local devices and remote servers used.
+        """
         filter = get_input()
         since = datetime.datetime.now() - datetime.timedelta(weeks=1)
         till = datetime.datetime.now()
@@ -77,10 +83,17 @@ class TrafficView(Controller):
         return jsonify({'traffic': traffic, 'devices': devices, 'servers': servers})
 
     def get_sources(self, query):
+        """Get the local devices used for a certain traffic query
+
+        Args:
+            query (Query): A SQLAlchemy query for the current traffic request
+
+        Returns:
+            list: A list with all used devices
+        """
         mac_addresses = query.group_by('src').all()
         mac_addresses = set(
             map(lambda traffic: traffic.Traffic.src, mac_addresses))
-        print(mac_addresses)
         devices = pihole_models.PiHoleDevice.query.filter(
             pihole_models.PiHoleDevice.hwaddr.in_(mac_addresses)).all()
         devices = parse_model(devices)
@@ -95,6 +108,14 @@ class TrafficView(Controller):
         return devices
 
     def get_destinations(self, query):
+        """Get the desitnation servers for a certain traffic query.
+
+        Args:
+            query (Query): A SQLAlchemy query for the current traffic request
+
+        Returns:
+            list: A list of server dictionairies
+        """
         ip_addresses = query.group_by('dst').all()
         ip_addresses = set(
             map(lambda traffic: traffic.Traffic.dst, ip_addresses))
@@ -105,6 +126,12 @@ class TrafficView(Controller):
     
     @route('filters', methods=['GET'])
     def get_filters(self):
+        """Retrieve all possible filter options, inlcuding the locations, server_groups and companies.\n
+        Endpoint: GET /traffic/filters
+        
+        Returns:
+            dict: A dictionary with all countries, server_groups and companies. 
+        """
         locations = db.session.query(api_models.Location.country).group_by(api_models.Location.country).all()
         server_groups = api_models.ServerGroup.query.all()
         companies = api_models.Company.query.all()

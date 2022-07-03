@@ -35,13 +35,12 @@ class PiHoleDevice(db.Model):
         if (self.ip == '192.168.2.1'):
             name = "PrivateHome"
         elif (self.ip == '192.168.2.2'):
-            name = "IOT Router"
+            name = "Router"
         else:
             for address in self.addresses:
                 if(address.name is not None):
                     name = address.name
                     break
-        
         return name
     @property
     def ip(self):

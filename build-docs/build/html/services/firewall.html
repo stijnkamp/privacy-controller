@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>1. Firewall Service &mdash; PrivateHome 1.0 documentation</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <title>2. Firewall Service &mdash; PrivateHome 1.0 documentation</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -16,8 +16,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="2. Resolver Service" href="resolver.html" />
-    <link rel="prev" title="3. Utils helpers" href="../shared/utils.html" /> 
+    <link rel="next" title="3. Tracker Service" href="tracker.html" />
+    <link rel="prev" title="1. Web Service" href="web.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -57,19 +57,19 @@
 </ul>
 <p class="caption"><span class="caption-text">Services</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">1. Firewall Service</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#nf-tables">1.1. NF-tables</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#general-flow">1.2. General flow</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-firewall">1.3. Classes and functions</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#firewall-commands">1.3.1. Firewall commands</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#ruleparser">1.3.2. RuleParser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="web.html">1. Web Service</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">2. Firewall Service</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#nf-tables">2.1. NF-tables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#general-flow">2.2. General flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-firewall">2.3. Classes and functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#firewall-commands">2.3.1. Firewall commands</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ruleparser">2.3.2. RuleParser</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="resolver.html">2. Resolver Service</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tracker.html">3. Tracker Service</a></li>
-<li class="toctree-l1"><a class="reference internal" href="web.html">4. Web Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="resolver.html">4. Resolver Service</a></li>
 <li class="toctree-l1"><a class="reference internal" href="websocket.html">5. Websocket Service</a></li>
 </ul>
 
@@ -87,7 +87,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-      <li><span class="section-number">1. </span>Firewall Service</li>
+      <li><span class="section-number">2. </span>Firewall Service</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -97,23 +97,23 @@
            <div itemprop="articleBody">
              
   <div class="section" id="firewall-service">
-<span id="id1"></span><h1><span class="section-number">1. </span>Firewall Service<a class="headerlink" href="#firewall-service" title="Permalink to this headline">¶</a></h1>
+<span id="id1"></span><h1><span class="section-number">2. </span>Firewall Service<a class="headerlink" href="#firewall-service" title="Permalink to this headline">¶</a></h1>
 <p>A firewall is needed in order to  intercept packages that are needed/wanted inside your local smart home setup.</p>
 <div class="section" id="nf-tables">
-<h2><span class="section-number">1.1. </span>NF-tables<a class="headerlink" href="#nf-tables" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">2.1. </span>NF-tables<a class="headerlink" href="#nf-tables" title="Permalink to this headline">¶</a></h2>
 <p>This service is updating a kernel running program named <a class="reference external" href="https://wiki.nftables.org/wiki-nftables/index.php/Main_Page">NF-tables</a>, which is the standard that is already installed on most Linux devices.
 It is the new version of ip-tables, but is has the same approach.</p>
 </div>
 <div class="section" id="general-flow">
-<h2><span class="section-number">1.2. </span>General flow<a class="headerlink" href="#general-flow" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">2.2. </span>General flow<a class="headerlink" href="#general-flow" title="Permalink to this headline">¶</a></h2>
 <p>This service takes all devices from the database and setup rules for the firewall to drop packets that are on the blacklist.
 When all rules are configured it will set those rules inside the kernels program, which will then be updated to apply with these new rules.
 Next it is waiting for a queue command to check again the devices and setup the rules.</p>
 </div>
 <div class="section" id="module-firewall">
-<span id="classes-and-functions"></span><h2><span class="section-number">1.3. </span>Classes and functions<a class="headerlink" href="#module-firewall" title="Permalink to this headline">¶</a></h2>
+<span id="classes-and-functions"></span><h2><span class="section-number">2.3. </span>Classes and functions<a class="headerlink" href="#module-firewall" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="firewall-commands">
-<h3><span class="section-number">1.3.1. </span>Firewall commands<a class="headerlink" href="#firewall-commands" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">2.3.1. </span>Firewall commands<a class="headerlink" href="#firewall-commands" title="Permalink to this headline">¶</a></h3>
 <p>This class contains all the commands that can be done by putting them inside the Firewall queue</p>
 <span class="target" id="module-firewall.firewall_commands"></span><dl class="py class">
 <dt id="firewall.firewall_commands.FirewallCommands">
@@ -149,7 +149,7 @@ Next it is waiting for a queue command to check again the devices and setup the 
 
 </div>
 <div class="section" id="ruleparser">
-<h3><span class="section-number">1.3.2. </span>RuleParser<a class="headerlink" href="#ruleparser" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">2.3.2. </span>RuleParser<a class="headerlink" href="#ruleparser" title="Permalink to this headline">¶</a></h3>
 <p>This class is used to create the nf-tables rules from the known devices inside the database.</p>
 <span class="target" id="module-firewall.rule_parser"></span><dl class="py class">
 <dt id="firewall.rule_parser.RuleParser">
@@ -196,8 +196,8 @@ Next it is waiting for a queue command to check again the devices and setup the 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../shared/utils.html" class="btn btn-neutral float-left" title="3. Utils helpers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="resolver.html" class="btn btn-neutral float-right" title="2. Resolver Service" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="web.html" class="btn btn-neutral float-left" title="1. Web Service" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tracker.html" class="btn btn-neutral float-right" title="3. Tracker Service" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

@@ -11,11 +11,24 @@ import scapy.all as sc
 
 
 class ScapyTracker(object):
+    """Track packets using the sniffer from the scapy library.
+
+    Args:
+         state (State): The shared state with other services
+    """
     def __init__(self, state):
         self._active = True
         self.packet_handler = None
 
     def get_packet_size(self, p):
+        """Get size of content packet by looking at protocol and remove headers
+
+        Args:
+            p (ScapyPacket): A complete scapy packet from the sniffer
+
+        Returns:
+            int: Size of content in bytes
+        """
         if sc.TCP in p:
             return len(p[sc.TCP].payload)
         elif sc.UDP in p:
@@ -25,6 +38,11 @@ class ScapyTracker(object):
         return 0
 
     def parse_packet(self, pkt):
+        """Translate a scapy packet to the formated dict
+
+        Args:
+            pkt (ScapyPacket): A complete scapy packet from the sniffer
+        """
         if sc.IP not in pkt:
             return
         packetSize = self.get_packet_size(pkt)
@@ -51,6 +69,11 @@ class ScapyTracker(object):
         self.packet_handler(packet)
 
     async def start(self, packet_handler):
+        """Start the thread and send all received packets to the packet handler
+
+        Args:
+            packet_handler (def): The handler callback function
+        """
         self.packet_handler = packet_handler
         utils.safe_run(sc.sniff, kwargs={
             'iface': 'eth1',

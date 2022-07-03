@@ -1,0 +1,56 @@
+{
+  "slug": "home_assistant",
+  "device_types": [
+    {
+      "slug": "controller",
+      "name": "Home Assistant",
+      "icon": "home_assistant.png",
+      "functionalities": [
+        {
+          "name": "Control your smart home at home",
+          "services": [
+            {
+              "slug": "send_commands",
+              "device_type": "*",
+              "data": [
+                {
+                  "type": "general.any",
+                  "trigger": "Needed by user"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Control your smart home from anywhere",
+          "services": [
+            {
+              "slug": "send_info_to_cloud",
+              "server_group": "home_assistant.cloud",
+              "data": [
+                {
+                  "type": "general.any",
+                  "trigger": "Needed by user"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "server_groups": [
+    {
+      "slug": "cloud",
+      "name": "Home Assistant Server",
+      "queries": [
+        {
+          "domain": ".*home-assistant.*"
+        },
+        {
+          "domain": ".*nabucasa.*"
+        }
+      ]
+    }
+  ]
+}

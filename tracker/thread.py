@@ -20,6 +20,11 @@ from resolver.helpers import get_dhcp_leases
 
 
 class Tracker(thread.Thread):
+    """Tracker service which retrieves packets from the eth1 interface and handles them accordingly. 
+
+    Args:
+        state (State): The shared state with other services
+    """
     def __init__(self, state):
         super().__init__('Tracker', state)
         self.handler = TcpDumpTracker(state)
@@ -33,6 +38,14 @@ class Tracker(thread.Thread):
             self.handler.start(self.packet_handler)))
 
     def getPacketKey(self, packet):
+        """Retrieve a unique key for the specific packet to know to which group it needs to add to.
+
+        Args:
+            packet (dict): The packet
+
+        Returns:
+            str: The packet group unique key
+        """
         return {
             'src': packet["src_ip"],
             'dst': f'{packet["src_ip"]}.{packet["dst"]}',
@@ -41,6 +54,12 @@ class Tracker(thread.Thread):
         }[config.packet_granularity]
 
     def packet_handler(self, packet):
+        """The packet handler function after a packet is retrieved using the predefined tracker.
+        It retrieves the other information using the resolver service and adds it to the database every 
+
+        Args:
+            packet (dict): The retrieved packet from the tracker
+        """
         if(self.getPacketKey(packet) not in self.packets):
             self.packets[self.getPacketKey(packet)] = packet
         else:

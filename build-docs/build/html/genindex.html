@@ -37,6 +37,11 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="index.html">Welcome to PrivateHome’s documentation!</a></li>
 </ul>
+<p class="caption"><span class="caption-text">Repositories</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/stijnkamp/privacy-controller">Controller repository</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/stijnkamp/privacy-control-interface">Vue frontend repository</a></li>
+</ul>
 <p class="caption"><span class="caption-text">Installation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="installation/hardware.html">1. Hardware installation</a></li>
@@ -55,10 +60,10 @@
 </ul>
 <p class="caption"><span class="caption-text">Services</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="services/firewall.html">1. Firewall Service</a></li>
-<li class="toctree-l1"><a class="reference internal" href="services/resolver.html">2. Resolver Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="services/web.html">1. Web Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="services/firewall.html">2. Firewall Service</a></li>
 <li class="toctree-l1"><a class="reference internal" href="services/tracker.html">3. Tracker Service</a></li>
-<li class="toctree-l1"><a class="reference internal" href="services/web.html">4. Web Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="services/resolver.html">4. Resolver Service</a></li>
 <li class="toctree-l1"><a class="reference internal" href="services/websocket.html">5. Websocket Service</a></li>
 </ul>
 
@@ -93,12 +98,14 @@
  | <a href="#B"><strong>B</strong></a>
  | <a href="#C"><strong>C</strong></a>
  | <a href="#D"><strong>D</strong></a>
+ | <a href="#E"><strong>E</strong></a>
  | <a href="#F"><strong>F</strong></a>
  | <a href="#G"><strong>G</strong></a>
  | <a href="#H"><strong>H</strong></a>
  | <a href="#I"><strong>I</strong></a>
  | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
+ | <a href="#N"><strong>N</strong></a>
  | <a href="#P"><strong>P</strong></a>
  | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
@@ -113,16 +120,31 @@
       <li><a href="services/web.html#web.helpers.add_relationship">add_relationship() (in module web.helpers)</a>
 </li>
   </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="services/web.html#web.auth.controllers.AuthView">AuthView (class in web.auth.controllers)</a>
+</li>
+  </ul></td>
 </tr></table>
 
 <h2 id="B">B</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="services/resolver.html#resolver.dns_lookup.batch_location_for_ip">batch_location_for_ip() (in module resolver.dns_lookup)</a>
+</li>
       <li>
-    benchmark
+    benchmarks.raw_send
 
       <ul>
-        <li><a href="start_scripts/benchmark.html#module-benchmark">module</a>
+        <li><a href="start_scripts/benchmark.html#module-benchmarks.raw_send">module</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    benchmarks.wetransfer
+
+      <ul>
+        <li><a href="start_scripts/benchmark.html#module-benchmarks.wetransfer">module</a>
 </li>
       </ul></li>
   </ul></td>
@@ -131,14 +153,14 @@
 <h2 id="C">C</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="services/web.html#web.web_server.catch_all">catch_all() (in module web.web_server)</a>
-</li>
       <li><a href="services/resolver.html#resolver.resolver_commands.ResolverCommands.check_all_sources">check_all_sources() (resolver.resolver_commands.ResolverCommands method)</a>
 </li>
-      <li><a href="start_scripts/benchmark.html#benchmark.clear_buffer">clear_buffer() (in module benchmark)</a>
+      <li><a href="services/websocket.html#websocket.thread.Websocket.check_for_stop">check_for_stop() (websocket.thread.Websocket method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="start_scripts/benchmark.html#benchmarks.raw_send.clear_buffer">clear_buffer() (in module benchmarks.raw_send)</a>
+</li>
       <li>
     config
 
@@ -146,19 +168,35 @@
         <li><a href="shared/config.html#module-config">module</a>
 </li>
       </ul></li>
-      <li><a href="services/web.html#web.controller.Controller">Controller (class in web.controller)</a>
-</li>
   </ul></td>
 </tr></table>
 
 <h2 id="D">D</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="services/web.html#web.web_server.docs">docs() (in module web.web_server)</a>
+      <li><a href="services/web.html#web.api.controllers.devices.DevicesView.decorators">decorators (web.api.controllers.devices.DevicesView attribute)</a>
+
+      <ul>
+        <li><a href="services/web.html#web.api.controllers.server_group.ServerGroupView.decorators">(web.api.controllers.server_group.ServerGroupView attribute)</a>
 </li>
+        <li><a href="services/web.html#web.api.controllers.traffic.TrafficView.decorators">(web.api.controllers.traffic.TrafficView attribute)</a>
+</li>
+        <li><a href="services/web.html#web.auth.controllers.AuthView.decorators">(web.auth.controllers.AuthView attribute)</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="services/web.html#web.web_server.docs_redirect">docs_redirect() (in module web.web_server)</a>
+      <li><a href="services/web.html#web.api.controllers.devices.DevicesView.devices">devices() (web.api.controllers.devices.DevicesView method)</a>
+</li>
+      <li><a href="services/web.html#web.api.controllers.devices.DevicesView">DevicesView (class in web.api.controllers.devices)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="E">E</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="services/web.html#web.api.controllers.traffic.TrafficView.excluded_methods">excluded_methods (web.api.controllers.traffic.TrafficView attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -202,36 +240,38 @@
       <ul>
         <li><a href="services/resolver.html#resolver.resolver_commands.ResolverCommands.get">(resolver.resolver_commands.ResolverCommands method)</a>
 </li>
+        <li><a href="services/web.html#web.api.controllers.devices.DevicesView.get">(web.api.controllers.devices.DevicesView method)</a>
+</li>
+        <li><a href="services/web.html#web.api.controllers.server_group.ServerGroupView.get">(web.api.controllers.server_group.ServerGroupView method)</a>
+</li>
       </ul></li>
+      <li><a href="services/web.html#web.api.controllers.devices.DevicesView.get_abstractions">get_abstractions() (web.api.controllers.devices.DevicesView method)</a>
+</li>
       <li><a href="services/resolver.html#resolver.dns_lookup.get_company_for_domain">get_company_for_domain() (in module resolver.dns_lookup)</a>
 </li>
       <li><a href="shared/utils.html#utils.get_current_thread_name">get_current_thread_name() (in module utils)</a>
 </li>
-      <li><a href="services/resolver.html#resolver.helpers.get_database_file">get_database_file() (in module resolver.helpers)</a>
-</li>
-      <li><a href="services/resolver.html#resolver.helpers.get_dhcp_leases">get_dhcp_leases() (in module resolver.helpers)</a>
+      <li><a href="services/web.html#web.api.controllers.traffic.TrafficView.get_destinations">get_destinations() (web.api.controllers.traffic.TrafficView method)</a>
 </li>
       <li><a href="services/resolver.html#resolver.dns_lookup.get_domain_for_ip">get_domain_for_ip() (in module resolver.dns_lookup)</a>
+</li>
+      <li><a href="services/web.html#web.api.controllers.traffic.TrafficView.get_filters">get_filters() (web.api.controllers.traffic.TrafficView method)</a>
 </li>
       <li><a href="services/firewall.html#firewall.firewall_commands.FirewallCommands.get_firewall_rules">get_firewall_rules() (firewall.firewall_commands.FirewallCommands method)</a>
 </li>
       <li><a href="services/web.html#web.helpers.get_input">get_input() (in module web.helpers)</a>
 </li>
-      <li><a href="shared/utils.html#utils.get_json">get_json() (in module utils)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="shared/utils.html#utils.get_json">get_json() (in module utils)</a>
+</li>
       <li><a href="services/resolver.html#resolver.dns_lookup.get_location_for_ip">get_location_for_ip() (in module resolver.dns_lookup)</a>
 </li>
       <li><a href="services/web.html#web.helpers.get_or_create">get_or_create() (in module web.helpers)</a>
 </li>
-      <li><a href="services/resolver.html#resolver.helpers.get_own_hwaddr">get_own_hwaddr() (in module resolver.helpers)</a>
-</li>
       <li><a href="services/tracker.html#tracker.scapy_tracker.ScapyTracker.get_packet_size">get_packet_size() (tracker.scapy_tracker.ScapyTracker method)</a>
 </li>
       <li><a href="shared/utils.html#utils.get_path">get_path() (in module utils)</a>
-</li>
-      <li><a href="services/resolver.html#resolver.helpers.get_pihole_config">get_pihole_config() (in module resolver.helpers)</a>
 </li>
       <li><a href="shared/state.html#state.State.get_queue">get_queue() (state.State method)</a>
 </li>
@@ -243,13 +283,25 @@
 </li>
       <li><a href="shared/config.html#config.get_services">get_services() (in module config)</a>
 </li>
+      <li><a href="services/web.html#web.api.controllers.traffic.TrafficView.get_sources">get_sources() (web.api.controllers.traffic.TrafficView method)</a>
+</li>
+      <li><a href="services/tracker.html#tracker.thread.Tracker.getPacketKey">getPacketKey() (tracker.thread.Tracker method)</a>
+</li>
   </ul></td>
 </tr></table>
 
 <h2 id="H">H</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="start_scripts/benchmark.html#benchmark.handle_packet">handle_packet() (in module benchmark)</a>
+      <li><a href="start_scripts/benchmark.html#benchmarks.raw_send.handle_packet">handle_packet() (in module benchmarks.raw_send)</a>
+
+      <ul>
+        <li><a href="start_scripts/benchmark.html#benchmarks.wetransfer.handle_packet">(in module benchmarks.wetransfer)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="services/websocket.html#websocket.thread.Websocket.handler">handler() (websocket.thread.Websocket method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -257,10 +309,12 @@
 <h2 id="I">I</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="shared/utils.html#utils.is_ip4">is_ip4() (in module utils)</a>
+      <li><a href="services/web.html#web.api.controllers.traffic.TrafficView.index">index() (web.api.controllers.traffic.TrafficView method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="shared/utils.html#utils.is_ip4">is_ip4() (in module utils)</a>
+</li>
       <li><a href="shared/utils.html#utils.is_json">is_json() (in module utils)</a>
 </li>
   </ul></td>
@@ -284,11 +338,15 @@
         <li><a href="start_scripts/main.html#module-main">module</a>
 </li>
       </ul></li>
+      <li><a href="services/web.html#web.auth.controllers.AuthView.me">me() (web.auth.controllers.AuthView method)</a>
+</li>
       <li>
     module
 
       <ul>
-        <li><a href="start_scripts/benchmark.html#module-benchmark">benchmark</a>
+        <li><a href="start_scripts/benchmark.html#module-benchmarks.raw_send">benchmarks.raw_send</a>
+</li>
+        <li><a href="start_scripts/benchmark.html#module-benchmarks.wetransfer">benchmarks.wetransfer</a>
 </li>
         <li><a href="shared/config.html#module-config">config</a>
 </li>
@@ -300,11 +358,7 @@
 </li>
         <li><a href="start_scripts/main.html#module-main">main</a>
 </li>
-        <li><a href="services/resolver.html#module-resolver">resolver</a>
-</li>
         <li><a href="services/resolver.html#module-resolver.dns_lookup">resolver.dns_lookup</a>
-</li>
-        <li><a href="services/resolver.html#module-resolver.helpers">resolver.helpers</a>
 </li>
         <li><a href="services/resolver.html#module-resolver.resolver_commands">resolver.resolver_commands</a>
 </li>
@@ -312,41 +366,67 @@
 </li>
         <li><a href="shared/thread.html#module-thread">thread</a>
 </li>
-        <li><a href="services/tracker.html#module-tracker">tracker</a>
-</li>
         <li><a href="services/tracker.html#module-tracker.scapy_tracker">tracker.scapy_tracker</a>
 </li>
         <li><a href="services/tracker.html#module-tracker.tcp_dump_tracker">tracker.tcp_dump_tracker</a>
 </li>
+        <li><a href="services/tracker.html#module-tracker.thread">tracker.thread</a>
+</li>
         <li><a href="shared/utils.html#module-utils">utils</a>
 </li>
-        <li><a href="services/web.html#module-web">web</a>
+        <li><a href="services/web.html#module-web.api.controllers.devices">web.api.controllers.devices</a>
 </li>
-        <li><a href="services/web.html#module-web.controller">web.controller</a>
+        <li><a href="services/web.html#module-web.api.controllers.server_group">web.api.controllers.server_group</a>
+</li>
+        <li><a href="services/web.html#module-web.api.controllers.traffic">web.api.controllers.traffic</a>
+</li>
+        <li><a href="services/web.html#module-web.auth.controllers">web.auth.controllers</a>
+</li>
+        <li><a href="services/web.html#module-web.auth.helpers">web.auth.helpers</a>
 </li>
         <li><a href="services/web.html#module-web.helpers">web.helpers</a>
 </li>
         <li><a href="services/web.html#module-web.web_server">web.web_server</a>
 </li>
-        <li><a href="services/websocket.html#module-websocket">websocket</a>
+        <li><a href="services/websocket.html#module-websocket.thread">websocket.thread</a>
 </li>
       </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="N">N</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="services/web.html#web.api.controllers.devices.DevicesView.new_device">new_device() (web.api.controllers.devices.DevicesView method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="services/web.html#web.api.controllers.devices.DevicesView.new_devices">new_devices() (web.api.controllers.devices.DevicesView method)</a>
+</li>
+      <li><a href="services/websocket.html#websocket.thread.Websocket.notify_clients">notify_clients() (websocket.thread.Websocket method)</a>
+</li>
   </ul></td>
 </tr></table>
 
 <h2 id="P">P</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="services/tracker.html#tracker.thread.Tracker.packet_handler">packet_handler() (tracker.thread.Tracker method)</a>
+</li>
       <li><a href="services/web.html#web.helpers.parse_model">parse_model() (in module web.helpers)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="services/tracker.html#tracker.scapy_tracker.ScapyTracker.parse_packet">parse_packet() (tracker.scapy_tracker.ScapyTracker method)</a>
 
       <ul>
         <li><a href="services/tracker.html#tracker.tcp_dump_tracker.TcpDumpTracker.parse_packet">(tracker.tcp_dump_tracker.TcpDumpTracker method)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="services/web.html#web.api.controllers.devices.DevicesView.post">post() (web.api.controllers.devices.DevicesView method)</a>
+</li>
+      <li><a href="services/web.html#web.api.controllers.devices.DevicesView.put">put() (web.api.controllers.devices.DevicesView method)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -355,19 +435,14 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="services/tracker.html#tracker.tcp_dump_tracker.re_param">re_param() (in module tracker.tcp_dump_tracker)</a>
 </li>
-      <li><a href="start_scripts/benchmark.html#benchmark.receive_packet">receive_packet() (in module benchmark)</a>
+      <li><a href="start_scripts/benchmark.html#benchmarks.raw_send.receive_packet">receive_packet() (in module benchmarks.raw_send)</a>
+</li>
+      <li><a href="start_scripts/benchmark.html#benchmarks.raw_send.receive_packets">receive_packets() (in module benchmarks.raw_send)</a>
 </li>
       <li><a href="services/resolver.html#resolver.resolver_commands.ResolverCommands.resolve_destinations">resolve_destinations() (resolver.resolver_commands.ResolverCommands method)</a>
 </li>
       <li><a href="services/resolver.html#resolver.resolver_commands.ResolverCommands.resolve_sources">resolve_sources() (resolver.resolver_commands.ResolverCommands method)</a>
 </li>
-      <li>
-    resolver
-
-      <ul>
-        <li><a href="services/resolver.html#module-resolver">module</a>
-</li>
-      </ul></li>
       <li>
     resolver.dns_lookup
 
@@ -378,13 +453,6 @@
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li>
-    resolver.helpers
-
-      <ul>
-        <li><a href="services/resolver.html#module-resolver.helpers">module</a>
-</li>
-      </ul></li>
-      <li>
     resolver.resolver_commands
 
       <ul>
@@ -394,6 +462,8 @@
       <li><a href="services/resolver.html#resolver.resolver_commands.ResolverCommands">ResolverCommands (class in resolver.resolver_commands)</a>
 </li>
       <li><a href="services/resolver.html#resolver.dns_lookup.reverse_dns">reverse_dns() (in module resolver.dns_lookup)</a>
+</li>
+      <li><a href="services/web.html#web.api.controllers.server_group.ServerGroupView.route_base">route_base (web.api.controllers.server_group.ServerGroupView attribute)</a>
 </li>
       <li><a href="services/firewall.html#firewall.rule_parser.RuleParser">RuleParser (class in firewall.rule_parser)</a>
 </li>
@@ -413,15 +483,19 @@
 </li>
       <li><a href="shared/state.html#state.State.send_command">send_command() (state.State method)</a>
 </li>
+      <li><a href="services/web.html#web.api.controllers.server_group.ServerGroupView">ServerGroupView (class in web.api.controllers.server_group)</a>
+</li>
       <li><a href="shared/thread.html#thread.Thread.set_queue">set_queue() (thread.Thread method)</a>
 </li>
       <li><a href="services/firewall.html#firewall.firewall_commands.FirewallCommands.set_standard_rules">set_standard_rules() (firewall.firewall_commands.FirewallCommands method)</a>
 </li>
       <li><a href="services/web.html#web.web_server.WebServer.setup_modules">setup_modules() (web.web_server.WebServer method)</a>
 </li>
-      <li><a href="start_scripts/benchmark.html#benchmark.start">start() (in module benchmark)</a>
+      <li><a href="start_scripts/benchmark.html#benchmarks.raw_send.start">start() (in module benchmarks.raw_send)</a>
 
       <ul>
+        <li><a href="start_scripts/benchmark.html#benchmarks.wetransfer.start">(in module benchmarks.wetransfer)</a>
+</li>
         <li><a href="start_scripts/main.html#main.start">(in module main)</a>
 </li>
         <li><a href="shared/thread.html#thread.Thread.start">(thread.Thread method)</a>
@@ -461,15 +535,10 @@
       </ul></li>
       <li><a href="shared/thread.html#thread.Thread">Thread (class in thread)</a>
 </li>
-      <li>
-    tracker
-
-      <ul>
-        <li><a href="services/tracker.html#module-tracker">module</a>
+      <li><a href="services/web.html#web.auth.controllers.AuthView.token">token() (web.auth.controllers.AuthView method)</a>
 </li>
-      </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="services/tracker.html#tracker.thread.Tracker">Tracker (class in tracker.thread)</a>
+</li>
       <li>
     tracker.scapy_tracker
 
@@ -477,6 +546,8 @@
         <li><a href="services/tracker.html#module-tracker.scapy_tracker">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     tracker.tcp_dump_tracker
 
@@ -484,6 +555,19 @@
         <li><a href="services/tracker.html#module-tracker.tcp_dump_tracker">module</a>
 </li>
       </ul></li>
+      <li>
+    tracker.thread
+
+      <ul>
+        <li><a href="services/tracker.html#module-tracker.thread">module</a>
+</li>
+      </ul></li>
+      <li><a href="services/web.html#web.api.controllers.traffic.TrafficView">TrafficView (class in web.api.controllers.traffic)</a>
+</li>
+      <li><a href="services/web.html#web.api.controllers.devices.DevicesView.type_functionalities">type_functionalities() (web.api.controllers.devices.DevicesView method)</a>
+</li>
+      <li><a href="services/web.html#web.api.controllers.devices.DevicesView.types">types() (web.api.controllers.devices.DevicesView method)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -508,19 +592,42 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li>
-    web
+    web.api.controllers.devices
 
       <ul>
-        <li><a href="services/web.html#module-web">module</a>
+        <li><a href="services/web.html#module-web.api.controllers.devices">module</a>
 </li>
       </ul></li>
       <li>
-    web.controller
+    web.api.controllers.server_group
 
       <ul>
-        <li><a href="services/web.html#module-web.controller">module</a>
+        <li><a href="services/web.html#module-web.api.controllers.server_group">module</a>
 </li>
       </ul></li>
+      <li>
+    web.api.controllers.traffic
+
+      <ul>
+        <li><a href="services/web.html#module-web.api.controllers.traffic">module</a>
+</li>
+      </ul></li>
+      <li>
+    web.auth.controllers
+
+      <ul>
+        <li><a href="services/web.html#module-web.auth.controllers">module</a>
+</li>
+      </ul></li>
+      <li>
+    web.auth.helpers
+
+      <ul>
+        <li><a href="services/web.html#module-web.auth.helpers">module</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     web.helpers
 
@@ -528,8 +635,6 @@
         <li><a href="services/web.html#module-web.helpers">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     web.web_server
 
@@ -539,11 +644,13 @@
       </ul></li>
       <li><a href="services/web.html#web.web_server.WebServer">WebServer (class in web.web_server)</a>
 </li>
+      <li><a href="services/websocket.html#websocket.thread.Websocket">Websocket (class in websocket.thread)</a>
+</li>
       <li>
-    websocket
+    websocket.thread
 
       <ul>
-        <li><a href="services/websocket.html#module-websocket">module</a>
+        <li><a href="services/websocket.html#module-websocket.thread">module</a>
 </li>
       </ul></li>
   </ul></td>

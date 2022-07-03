@@ -13,6 +13,13 @@ class ResolverCommands(object):
         self._lock = multiprocessing.Lock()
 
     def resolve_destinations(self, destinations):
+        """Resolve all new IPv4 addresses that were not already resolved by the service. 
+        It ignores the local ip addresses and finds the domain, location, company and server group. 
+        It stores the resolved destination into the database
+
+        Args:
+            destinations (str[]): A set of IPv4 addresses
+        """
         with self._lock:
             known_destinations = db.session.query(api_models.Server.ip).filter(
                 api_models.Server.ip.in_(destinations)).all()
@@ -47,6 +54,11 @@ class ResolverCommands(object):
                     db.session.add(domain)
                     db.session.commit()
     def resolve_sources(self, sources):
+        """Get mac addresses for the ip sources which have sent packets
+
+        Args:
+            sources (str[]): local device IPv4 addresses
+        """
         for source in sources:
             source = source.replace('ip-', '')
             with self._lock:
@@ -55,7 +67,10 @@ class ResolverCommands(object):
                 if found_device:
                     db.session.query(api_models.Traffic).filter_by(src=source).update({api_models.Traffic.src: found_device.hwaddr})
                     db.session.commit()
+    
     def check_all_sources(self):
+        """Retrieve all sources from database which are not yet resolved
+        """
         sources = db.session.query(api_models.Traffic.src).filter(api_models.Traffic.src.contains('192.168.2.')).group_by(api_models.Traffic.src).all()
         sources = set(map(lambda traffic: traffic.src, sources))
         self.resolve_sources(sources)

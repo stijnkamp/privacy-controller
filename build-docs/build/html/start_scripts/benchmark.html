@@ -39,6 +39,11 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../index.html">Welcome to PrivateHome’s documentation!</a></li>
 </ul>
+<p class="caption"><span class="caption-text">Repositories</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/stijnkamp/privacy-controller">Controller repository</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/stijnkamp/privacy-control-interface">Vue frontend repository</a></li>
+</ul>
 <p class="caption"><span class="caption-text">Installation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation/hardware.html">1. Hardware installation</a></li>
@@ -57,10 +62,10 @@
 </ul>
 <p class="caption"><span class="caption-text">Services</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../services/firewall.html">1. Firewall Service</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../services/resolver.html">2. Resolver Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../services/web.html">1. Web Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../services/firewall.html">2. Firewall Service</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../services/tracker.html">3. Tracker Service</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../services/web.html">4. Web Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../services/resolver.html">4. Resolver Service</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../services/websocket.html">5. Websocket Service</a></li>
 </ul>
 
@@ -91,25 +96,89 @@
 <h1><span class="section-number">2. </span>benchmark.py script<a class="headerlink" href="#benchmark-py-script" title="Permalink to this headline">¶</a></h1>
 <p>The benchmark script is mainly used to check if every packet that is send through the gateway will be processed by a TCP tracker. Unfortunately bigger packets are dropped by the system.
 In the current situation the controller retrieves around 80% of all packets, depending on the load of the tracker.</p>
-<span class="target" id="module-benchmark"></span><dl class="py function">
-<dt id="benchmark.clear_buffer">
-<code class="sig-prename descclassname">benchmark.</code><code class="sig-name descname">clear_buffer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sock</span></em><span class="sig-paren">)</span><a class="headerlink" href="#benchmark.clear_buffer" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<span class="target" id="module-benchmarks.raw_send"></span><dl class="py function">
+<dt id="benchmarks.raw_send.clear_buffer">
+<code class="sig-prename descclassname">benchmarks.raw_send.</code><code class="sig-name descname">clear_buffer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sock</span></em><span class="sig-paren">)</span><a class="headerlink" href="#benchmarks.raw_send.clear_buffer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clears buffer before listening to incoming new messages</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>sock</strong> (<em>Socket</em>) – the socket connection with a speficic client</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
-<dt id="benchmark.handle_packet">
-<code class="sig-prename descclassname">benchmark.</code><code class="sig-name descname">handle_packet</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">packet</span></em><span class="sig-paren">)</span><a class="headerlink" href="#benchmark.handle_packet" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt id="benchmarks.raw_send.handle_packet">
+<code class="sig-prename descclassname">benchmarks.raw_send.</code><code class="sig-name descname">handle_packet</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">packet</span></em><span class="sig-paren">)</span><a class="headerlink" href="#benchmarks.raw_send.handle_packet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles incoming packet and discards it if it is not from the sending source.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>packet</strong> (<em>dict</em>) – The packet received by the sender including a random content.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
-<dt id="benchmark.receive_packet">
-<code class="sig-prename descclassname">benchmark.</code><code class="sig-name descname">receive_packet</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sock</span></em>, <em class="sig-param"><span class="n">length</span></em><span class="sig-paren">)</span><a class="headerlink" href="#benchmark.receive_packet" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt id="benchmarks.raw_send.receive_packet">
+<code class="sig-prename descclassname">benchmarks.raw_send.</code><code class="sig-name descname">receive_packet</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sock</span></em>, <em class="sig-param"><span class="n">length</span></em><span class="sig-paren">)</span><a class="headerlink" href="#benchmarks.raw_send.receive_packet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Receives a packet with specific size from 1 open socket</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sock</strong> (<em>Socket</em>) – An connected socket with 1 client</p></li>
+<li><p><strong>length</strong> (<em>int</em>) – Number of bytes that need to be received.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The total anount of data received</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
-<dt id="benchmark.start">
-<code class="sig-prename descclassname">benchmark.</code><code class="sig-name descname">start</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#benchmark.start" title="Permalink to this definition">¶</a></dt>
-<dd><p>A benchmark of number of total packets captured by tcp_dump</p>
+<dt id="benchmarks.raw_send.receive_packets">
+<code class="sig-prename descclassname">benchmarks.raw_send.</code><code class="sig-name descname">receive_packets</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sockets</span></em>, <em class="sig-param"><span class="n">length</span></em><span class="sig-paren">)</span><a class="headerlink" href="#benchmarks.raw_send.receive_packets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Receive a specific size of packets from the multiple open packets.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sockets</strong> (<em>Socket</em><em>[</em><em>]</em>) – A list of open sockets</p></li>
+<li><p><strong>length</strong> (<em>int</em>) – The total size of the message that needs to be received.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>_description_</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>_type_</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="benchmarks.raw_send.start">
+<code class="sig-prename descclassname">benchmarks.raw_send.</code><code class="sig-name descname">start</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#benchmarks.raw_send.start" title="Permalink to this definition">¶</a></dt>
+<dd><p>A benchmark for percentage of total packets captured by tcp_dump. It waits until specified packet is received by the multiple ports</p>
+</dd></dl>
+
+<span class="target" id="module-benchmarks.wetransfer"></span><dl class="py function">
+<dt id="benchmarks.wetransfer.handle_packet">
+<code class="sig-prename descclassname">benchmarks.wetransfer.</code><code class="sig-name descname">handle_packet</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">packet</span></em><span class="sig-paren">)</span><a class="headerlink" href="#benchmarks.wetransfer.handle_packet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if packet has been send from a specific location and port.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>packet</strong> (<em>dict</em>) – the packet received by TcpDumpTracker</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="benchmarks.wetransfer.start">
+<code class="sig-prename descclassname">benchmarks.wetransfer.</code><code class="sig-name descname">start</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#benchmarks.wetransfer.start" title="Permalink to this definition">¶</a></dt>
+<dd><p>A benchmark of percentage of total document sent by Wetransfer and captured by tcp_dump</p>
 </dd></dl>
 
 </div>

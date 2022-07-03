@@ -171,15 +171,22 @@ class ServerGroup(Base):
     name: str
     slug = db.Column(db.String)
     name = db.Column(db.String)
-    # locations: list
+    locations: list
     companies: list
+    abstractions: list
 
     locations = db.relationship('Location', secondary="servers")
-    companies = db.relationship(
-        'Company', secondary="servers", overlaps="locations")
+    companies = db.relationship('Company', secondary="servers", overlaps="locations")
 
     services = db.relationship('Service', back_populates="server_group")
 
+    @property
+    def abstractions(self):
+        data_types = set()
+        for service in self.services:
+            data_types = data_types.union(set(map(lambda data: data.data_type_id, service.service_data)))
+        relation_filter = ~Abstraction.needed_data_types.any(~DataType.id.in_(data_types))
+        return Abstraction.query.filter(relation_filter).all()
     def __repr__(self):
         return '<ServerGroup %r>' % (self.id)
 
