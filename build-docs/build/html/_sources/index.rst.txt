@@ -66,7 +66,7 @@ Repositories
    :caption: Repositories
    
    Controller repository <https://github.com/stijnkamp/privacy-controller>
-   Vue frontend repository <https://github.com/stijnkamp/privacy-control-interface>
+   Vue frontend repository <https://github.com/stijnkamp/private-home-interface>
 
 Installation
 =============
