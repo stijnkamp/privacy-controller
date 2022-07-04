@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>1. Web Service &mdash; PrivateHome 1.0 documentation</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="2. Firewall Service" href="firewall.html" />
+    <link rel="prev" title="3. Utils helpers" href="../shared/utils.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> PrivateHome
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Home</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Welcome to PrivateHome’s documentation!</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Repositories</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/stijnkamp/privacy-controller">Controller repository</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/stijnkamp/privacy-control-interface">Vue frontend repository</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Installation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation/hardware.html">1. Hardware installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation/software.html">2. Software installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Start scripts</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../start_scripts/main.html">1. main.py script</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../start_scripts/benchmark.html">2. benchmark.py script</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Shared variables</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../shared/config.html">1. Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../shared/state.html">2. State</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../shared/utils.html">3. Utils helpers</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Services</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">1. Web Service</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#web-server">1.1. Web server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#database">1.2. Database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#helpers">1.3. Helpers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#modules">1.4. Modules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#api-module">1.4.1. API module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#auth-module">1.4.2. Auth module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pihole-module">1.4.3. Pihole module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="firewall.html">2. Firewall Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tracker.html">3. Tracker Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="resolver.html">4. Resolver Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="websocket.html">5. Websocket Service</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PrivateHome</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><span class="section-number">1. </span>Web Service</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="web-service">
+<span id="id1"></span><h1><span class="section-number">1. </span>Web Service<a class="headerlink" href="#web-service" title="Permalink to this headline">¶</a></h1>
+<p>The web service is responsible for all REST API calls to the web server, hosting the static frontend
+interface, and connecting with the database. It is a Model View Controller architecture
+(MVC) with different models, views, and controllers, each with its responsibilities.</p>
+<div class="section" id="web-server">
+<h2><span class="section-number">1.1. </span>Web server<a class="headerlink" href="#web-server" title="Permalink to this headline">¶</a></h2>
+<p>webserver.py is starts up the Flask server and connect to the database. It also inserts the existing modules.</p>
+<span class="target" id="module-web.web_server"></span><dl class="py class">
+<dt id="web.web_server.WebServer">
+<em class="property">class </em><code class="sig-prename descclassname">web.web_server.</code><code class="sig-name descname">WebServer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">state</span></em><span class="sig-paren">)</span><a class="headerlink" href="#web.web_server.WebServer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../shared/thread.html#thread.Thread" title="thread.Thread"><code class="xref py py-class docutils literal notranslate"><span class="pre">thread.Thread</span></code></a></p>
+<p>A Flask webserver serving the static frontend and provides a REST Api.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>state</strong> (<a class="reference internal" href="../shared/state.html#state.State" title="state.State"><em>State</em></a>) – The shared state with other services</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="web.web_server.WebServer.setup_modules">
+<code class="sig-name descname">setup_modules</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#web.web_server.WebServer.setup_modules" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register the different classfull Flask modules</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="database">
+<h2><span class="section-number">1.2. </span>Database<a class="headerlink" href="#database" title="Permalink to this headline">¶</a></h2>
+<p>The database is a sqlite scheme. The structure is displayed in <a class="reference internal" href="#db-structure"><span class="std std-ref">Database structure</span></a>.</p>
+<div class="figure align-default" id="id2">
+<span id="db-structure"></span><img alt="../_images/private_home_db.png" src="../_images/private_home_db.png" />
+<p class="caption"><span class="caption-text">Database structure</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="section" id="helpers">
+<h2><span class="section-number">1.3. </span>Helpers<a class="headerlink" href="#helpers" title="Permalink to this headline">¶</a></h2>
+<p>A couple of helpers are defined to help within multiple parts of the web service.</p>
+<span class="target" id="module-web.helpers"></span><dl class="py function">
+<dt id="web.helpers.add_relationship">
+<code class="sig-prename descclassname">web.helpers.</code><code class="sig-name descname">add_relationship</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">item</span></em>, <em class="sig-param"><span class="n">relationship</span></em><span class="sig-paren">)</span><a class="headerlink" href="#web.helpers.add_relationship" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="web.helpers.get_input">
+<code class="sig-prename descclassname">web.helpers.</code><code class="sig-name descname">get_input</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">columns</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">request_data</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#web.helpers.get_input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="web.helpers.get_or_create">
+<code class="sig-prename descclassname">web.helpers.</code><code class="sig-name descname">get_or_create</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">session</span></em>, <em class="sig-param"><span class="n">model</span></em>, <em class="sig-param"><span class="n">query</span></em>, <em class="sig-param"><span class="n">values</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#web.helpers.get_or_create" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="web.helpers.parse_model">
+<code class="sig-prename descclassname">web.helpers.</code><code class="sig-name descname">parse_model</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">item</span></em><span class="sig-paren">)</span><a class="headerlink" href="#web.helpers.parse_model" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="web.helpers.update_or_create">
+<code class="sig-prename descclassname">web.helpers.</code><code class="sig-name descname">update_or_create</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">session</span></em>, <em class="sig-param"><span class="n">model</span></em>, <em class="sig-param"><span class="n">query</span></em>, <em class="sig-param"><span class="n">values</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#web.helpers.update_or_create" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="modules">
+<h2><span class="section-number">1.4. </span>Modules<a class="headerlink" href="#modules" title="Permalink to this headline">¶</a></h2>
+<p>The web service is divided into 3 modules, which each contain models and/or controllers: Api module, Auth module and Pihole module.</p>
+<div class="section" id="api-module">
+<h3><span class="section-number">1.4.1. </span>API module<a class="headerlink" href="#api-module" title="Permalink to this headline">¶</a></h3>
+<p>The api modules is the main module of the webserver which serves all endpoints except the authentication endpoint.
+The controllers are divided into 3 submodules and is represented by a Flask classfull view.
+<strong>Devices controller</strong></p>
+<span class="target" id="module-web.api.controllers.devices"></span><dl class="py class">
+<dt id="web.api.controllers.devices.DevicesView">
+<em class="property">class </em><code class="sig-prename descclassname">web.api.controllers.devices.</code><code class="sig-name descname">DevicesView</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">state</span></em><span class="sig-paren">)</span><a class="headerlink" href="#web.api.controllers.devices.DevicesView" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">web.controller.Controller</span></code></p>
+<p>The device controller handling all endpoints related to the devices and its functionalities</p>
+<dl class="py attribute">
+<dt id="web.api.controllers.devices.DevicesView.decorators">
+<code class="sig-name descname">decorators</code><em class="property"> = [&lt;function optional_arg_decorator.&lt;locals&gt;.wrapped_decorator&gt;]</em><a class="headerlink" href="#web.api.controllers.devices.DevicesView.decorators" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="web.api.controllers.devices.DevicesView.devices">
+<code class="sig-name descname">devices</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#web.api.controllers.devices.DevicesView.devices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve all trusted and blocked devices from the database.</p>
+<p>Endpoint: GET /devices
+:returns: A json object including the trusted including the functionalities and blocked devices
+:rtype: JSON</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="web.api.controllers.devices.DevicesView.get">
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#web.api.controllers.devices.DevicesView.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve device for specific device_id</p>
+<p>Endpoint: GET /devices/{id}</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>id</strong> (<em>int</em>) – Device ID</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A json object including the retrieved device if it exists</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>JSON</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="web.api.controllers.devices.DevicesView.get_abstractions">
+<code class="sig-name descname">get_abstractions</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#web.api.controllers.devices.DevicesView.get_abstractions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve all abstractions that are possible.</p>
+<p>Endpoint: GET /devices/abstractions</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A json object will all possible abstractions</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>JSON</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="web.api.controllers.devices.DevicesView.new_device">
+<code class="sig-name descname">new_device</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#web.api.controllers.devices.DevicesView.new_device" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve a specific new device.</p>
+<p>Endpoint: GET /devices/new/{pihole_device_id}</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>id</strong> (<em>int</em>) – The id inside the pihole database</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a json object with the new device</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>JSON</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="web.api.controllers.devices.DevicesView.new_devices">
+<code class="sig-name descname">new_devices</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#web.api.controllers.devices.DevicesView.new_devices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve all newly discovered devices on the network.</p>
+<p>Endpoint: GET /devices/new</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A json object with the not added devices</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>JSON</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="web.api.controllers.devices.DevicesView.post">
+<code class="sig-name descname">post</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#web.api.controllers.devices.DevicesView.post" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a new discovered device to the system, inlcuding the enabled functionalities.</p>
+<p>Endpoint: POST /devices/add</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the created device</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>JSON</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="web.api.controllers.devices.DevicesView.put">
+<code class="sig-name descname">put</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#web.api.controllers.devices.DevicesView.put" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the devices functionalities and name.</p>
+<p>Endpoint: POST /devices/update/{id}</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>id</strong> (<em>int</em>) – Device type ID</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A json object with the updated device</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>JSON</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="web.api.controllers.devices.DevicesView.type_functionalities">
+<code class="sig-name descname">type_functionalities</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#web.api.controllers.devices.DevicesView.type_functionalities" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve the possible functionalities for a specific data type</p>
+<p>Endpoint: GET /devices/types/{data_type_id}/functionalities</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>id</strong> (<em>int</em>) – Data type id</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A json object with the possible functionaltiies</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>JSON</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="web.api.controllers.devices.DevicesView.types">
+<code class="sig-name descname">types</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#web.api.controllers.devices.DevicesView.types" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve all device types
+Can add query parameter ?include=functionalities to also include the possible functionalities.</p>
+<p>Endpoint: GET /devices/types</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A json object including all data types.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>JSON</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<p><strong>Traffic controller</strong></p>
+<span class="target" id="module-web.api.controllers.traffic"></span><dl class="py class">
+<dt id="web.api.controllers.traffic.TrafficView">
+<em class="property">class </em><code class="sig-prename descclassname">web.api.controllers.traffic.</code><code class="sig-name descname">TrafficView</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">state</span></em><span class="sig-paren">)</span><a class="headerlink" href="#web.api.controllers.traffic.TrafficView" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">web.controller.Controller</span></code></p>
+<dl class="py attribute">
+<dt id="web.api.controllers.traffic.TrafficView.decorators">
+<code class="sig-name descname">decorators</code><em class="property"> = [&lt;function optional_arg_decorator.&lt;locals&gt;.wrapped_decorator&gt;]</em><a class="headerlink" href="#web.api.controllers.traffic.TrafficView.decorators" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="web.api.controllers.traffic.TrafficView.excluded_methods">
+<code class="sig-name descname">excluded_methods</code><em class="property"> = ['get_sources', 'get_destinations']</em><a class="headerlink" href="#web.api.controllers.traffic.TrafficView.excluded_methods" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="web.api.controllers.traffic.TrafficView.get_destinations">
+<code class="sig-name descname">get_destinations</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">query</span></em><span class="sig-paren">)</span><a class="headerlink" href="#web.api.controllers.traffic.TrafficView.get_destinations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the desitnation servers for a certain traffic query.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>query</strong> (<em>Query</em>) – A SQLAlchemy query for the current traffic request</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of server dictionairies</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="web.api.controllers.traffic.TrafficView.get_filters">
+<code class="sig-name descname">get_filters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#web.api.controllers.traffic.TrafficView.get_filters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve all possible filter options, inlcuding the locations, server_groups and companies.</p>
+<p>Endpoint: GET /traffic/filters</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A dictionary with all countries, server_groups and companies.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="web.api.controllers.traffic.TrafficView.get_sources">
+<code class="sig-name descname">get_sources</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">query</span></em><span class="sig-paren">)</span><a class="headerlink" href="#web.api.controllers.traffic.TrafficView.get_sources" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the local devices used for a certain traffic query</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>query</strong> (<em>Query</em>) – A SQLAlchemy query for the current traffic request</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list with all used devices</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="web.api.controllers.traffic.TrafficView.index">
+<code class="sig-name descname">index</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#web.api.controllers.traffic.TrafficView.index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get traffic information with speficic filters, where to group by and which time period.</p>
+<p>Endpoint: POST /traffic</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a json object containing the traffic per timespan, including the local devices and remote servers used.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>JSON</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<p><strong>Server group controller</strong></p>
+<span class="target" id="module-web.api.controllers.server_group"></span><dl class="py class">
+<dt id="web.api.controllers.server_group.ServerGroupView">
+<em class="property">class </em><code class="sig-prename descclassname">web.api.controllers.server_group.</code><code class="sig-name descname">ServerGroupView</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">state</span></em><span class="sig-paren">)</span><a class="headerlink" href="#web.api.controllers.server_group.ServerGroupView" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">web.controller.Controller</span></code></p>
+<dl class="py attribute">
+<dt id="web.api.controllers.server_group.ServerGroupView.decorators">
+<code class="sig-name descname">decorators</code><em class="property"> = [&lt;function optional_arg_decorator.&lt;locals&gt;.wrapped_decorator&gt;]</em><a class="headerlink" href="#web.api.controllers.server_group.ServerGroupView.decorators" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="web.api.controllers.server_group.ServerGroupView.get">
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#web.api.controllers.server_group.ServerGroupView.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve a specific servergroup including the servers, companies, location and possible abstractions that the server group can have.
+Endpoint: GET /server-groups/{id}
+:param id: Server group ID
+:type id: int</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A json object containing the server group details</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>JSON</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="web.api.controllers.server_group.ServerGroupView.route_base">
+<code class="sig-name descname">route_base</code><em class="property"> = '/server-groups'</em><a class="headerlink" href="#web.api.controllers.server_group.ServerGroupView.route_base" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="auth-module">
+<h3><span class="section-number">1.4.2. </span>Auth module<a class="headerlink" href="#auth-module" title="Permalink to this headline">¶</a></h3>
+<p>To protect all routes a auth modules is developed. The models include a user, which is stored in the database and contains the name, email and password.
+It contains a controller to fetch a token using an email address and password. It also has a decorator to check if the token send with the request is valid.</p>
+<p><strong>Token controller</strong></p>
+<span class="target" id="module-web.auth.controllers"></span><dl class="py class">
+<dt id="web.auth.controllers.AuthView">
+<em class="property">class </em><code class="sig-prename descclassname">web.auth.controllers.</code><code class="sig-name descname">AuthView</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">state</span></em><span class="sig-paren">)</span><a class="headerlink" href="#web.auth.controllers.AuthView" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">web.controller.Controller</span></code></p>
+<dl class="py attribute">
+<dt id="web.auth.controllers.AuthView.decorators">
+<code class="sig-name descname">decorators</code><em class="property"> = []</em><a class="headerlink" href="#web.auth.controllers.AuthView.decorators" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="web.auth.controllers.AuthView.me">
+<code class="sig-name descname">me</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#web.auth.controllers.AuthView.me" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve logged in user
+Endpoint: GET /auth/me</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A json object with the logged in user</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>JSON</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="web.auth.controllers.AuthView.token">
+<code class="sig-name descname">token</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#web.auth.controllers.AuthView.token" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve auth token by sending email address and password.
+Endpoint: POST /auth/token</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A json object containing the token.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>JSON</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<p><strong>Decorator</strong></p>
+<span class="target" id="module-web.auth.helpers"></span></div>
+<div class="section" id="pihole-module">
+<h3><span class="section-number">1.4.3. </span>Pihole module<a class="headerlink" href="#pihole-module" title="Permalink to this headline">¶</a></h3>
+<p>The pihole module is created to make the bridge between pihole and the PrivateHome tool. This is done by connecting the Pihole database to the flask server.
+And define the needed Pihole models in this module. It includes the pihole devices discovered by the network and the including network addresses.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../shared/utils.html" class="btn btn-neutral float-left" title="3. Utils helpers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="firewall.html" class="btn btn-neutral float-right" title="2. Firewall Service" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, S.L. Kamp.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

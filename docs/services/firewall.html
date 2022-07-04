@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2. Firewall Service &mdash; PrivateHome 1.0 documentation</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="3. Tracker Service" href="tracker.html" />
+    <link rel="prev" title="1. Web Service" href="web.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> PrivateHome
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Home</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Welcome to PrivateHome’s documentation!</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Installation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation/hardware.html">1. Hardware installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation/software.html">2. Software installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Start scripts</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../start_scripts/main.html">1. main.py script</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../start_scripts/benchmark.html">2. benchmark.py script</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Shared variables</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../shared/config.html">1. Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../shared/state.html">2. State</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../shared/utils.html">3. Utils helpers</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Services</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="web.html">1. Web Service</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">2. Firewall Service</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#nf-tables">2.1. NF-tables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#general-flow">2.2. General flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-firewall">2.3. Classes and functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#firewall-commands">2.3.1. Firewall commands</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ruleparser">2.3.2. RuleParser</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tracker.html">3. Tracker Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="resolver.html">4. Resolver Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="websocket.html">5. Websocket Service</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PrivateHome</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><span class="section-number">2. </span>Firewall Service</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="firewall-service">
+<span id="id1"></span><h1><span class="section-number">2. </span>Firewall Service<a class="headerlink" href="#firewall-service" title="Permalink to this headline">¶</a></h1>
+<p>A firewall is needed in order to  intercept packages that are needed/wanted inside your local smart home setup.</p>
+<div class="section" id="nf-tables">
+<h2><span class="section-number">2.1. </span>NF-tables<a class="headerlink" href="#nf-tables" title="Permalink to this headline">¶</a></h2>
+<p>This service is updating a kernel running program named <a class="reference external" href="https://wiki.nftables.org/wiki-nftables/index.php/Main_Page">NF-tables</a>, which is the standard that is already installed on most Linux devices.
+It is the new version of ip-tables, but is has the same approach.</p>
+</div>
+<div class="section" id="general-flow">
+<h2><span class="section-number">2.2. </span>General flow<a class="headerlink" href="#general-flow" title="Permalink to this headline">¶</a></h2>
+<p>This service takes all devices from the database and setup rules for the firewall to drop packets that are on the blacklist.
+When all rules are configured it will set those rules inside the kernels program, which will then be updated to apply with these new rules.
+Next it is waiting for a queue command to check again the devices and setup the rules.</p>
+</div>
+<div class="section" id="module-firewall">
+<span id="classes-and-functions"></span><h2><span class="section-number">2.3. </span>Classes and functions<a class="headerlink" href="#module-firewall" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="firewall-commands">
+<h3><span class="section-number">2.3.1. </span>Firewall commands<a class="headerlink" href="#firewall-commands" title="Permalink to this headline">¶</a></h3>
+<p>This class contains all the commands that can be done by putting them inside the Firewall queue</p>
+<span class="target" id="module-firewall.firewall_commands"></span><dl class="py class">
+<dt id="firewall.firewall_commands.FirewallCommands">
+<em class="property">class </em><code class="sig-prename descclassname">firewall.firewall_commands.</code><code class="sig-name descname">FirewallCommands</code><a class="headerlink" href="#firewall.firewall_commands.FirewallCommands" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The firewall commands that can be done from the Firewall queue</p>
+<dl class="py method">
+<dt id="firewall.firewall_commands.FirewallCommands.get">
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cmd</span></em><span class="sig-paren">)</span><a class="headerlink" href="#firewall.firewall_commands.FirewallCommands.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="firewall.firewall_commands.FirewallCommands.get_firewall_rules">
+<code class="sig-name descname">get_firewall_rules</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#firewall.firewall_commands.FirewallCommands.get_firewall_rules" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve the current set of rules from the nf-tables service (<a class="reference external" href="https://firewalld.org/2019/09/libnftables-JSON">JSON structure</a>)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A dict with all rules</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="firewall.firewall_commands.FirewallCommands.set_standard_rules">
+<code class="sig-name descname">set_standard_rules</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#firewall.firewall_commands.FirewallCommands.set_standard_rules" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write all needed rules to the nf-tables</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="ruleparser">
+<h3><span class="section-number">2.3.2. </span>RuleParser<a class="headerlink" href="#ruleparser" title="Permalink to this headline">¶</a></h3>
+<p>This class is used to create the nf-tables rules from the known devices inside the database.</p>
+<span class="target" id="module-firewall.rule_parser"></span><dl class="py class">
+<dt id="firewall.rule_parser.RuleParser">
+<em class="property">class </em><code class="sig-prename descclassname">firewall.rule_parser.</code><code class="sig-name descname">RuleParser</code><a class="headerlink" href="#firewall.rule_parser.RuleParser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="firewall.rule_parser.RuleParser.get_rules_for_devices">
+<code class="sig-name descname">get_rules_for_devices</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#firewall.rule_parser.RuleParser.get_rules_for_devices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve devices from database and create nf-table rules.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>_description_</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>_type_</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="firewall.rule_parser.RuleParser.get_service_settings">
+<code class="sig-name descname">get_service_settings</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">service</span></em><span class="sig-paren">)</span><a class="headerlink" href="#firewall.rule_parser.RuleParser.get_service_settings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get rules for specific service</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>service</strong> (<em>str</em>) – json file name for standard rules</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>service rules</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="web.html" class="btn btn-neutral float-left" title="1. Web Service" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tracker.html" class="btn btn-neutral float-right" title="3. Tracker Service" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, S.L. Kamp.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
