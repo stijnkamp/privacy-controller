@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2. Software installation &mdash; PrivateHome 1.0 documentation</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="1. main.py script" href="../start_scripts/main.html" />
+    <link rel="prev" title="1. Hardware installation" href="hardware.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> PrivateHome
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Home</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Welcome to PrivateHome’s documentation!</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Installation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="hardware.html">1. Hardware installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">2. Software installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#operating-system">2.1. Operating System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ssh-access">2.2. SSH access</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installing-packages">2.3. Installing packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#starting-the-application">2.4. Starting the application</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Start scripts</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../start_scripts/main.html">1. main.py script</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../start_scripts/benchmark.html">2. benchmark.py script</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Shared variables</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../shared/config.html">1. Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../shared/state.html">2. State</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../shared/utils.html">3. Utils helpers</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Services</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../services/firewall.html">1. Firewall Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../services/resolver.html">2. Resolver Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../services/tracker.html">3. Tracker Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../services/web.html">4. Web Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../services/websocket.html">5. Websocket Service</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PrivateHome</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><span class="section-number">2. </span>Software installation</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="software-installation">
+<h1><span class="section-number">2. </span>Software installation<a class="headerlink" href="#software-installation" title="Permalink to this headline">¶</a></h1>
+<p>When we have setup the hardware in the previous section, we can install the required software packages.</p>
+<div class="section" id="operating-system">
+<h2><span class="section-number">2.1. </span>Operating System<a class="headerlink" href="#operating-system" title="Permalink to this headline">¶</a></h2>
+<p>The system should work with most of the linux operating systems. But the system is tested with Raspberry Pi OS Lite installed using the <a class="reference external" href="https://www.raspberrypi.com/software/">Raspberry Pi Imager</a>.
+Following the instruction inside the Raspberry Pi Imager and formatting the SD card with <cite>Raspberry Pi OS Lite</cite>.
+After you have formatted the SD card you can insert it into the Raspberry Pi and boot up.</p>
+</div>
+<div class="section" id="ssh-access">
+<h2><span class="section-number">2.2. </span>SSH access<a class="headerlink" href="#ssh-access" title="Permalink to this headline">¶</a></h2>
+<p>The installation can be done entirely inside the CLI. First we need to login into the Raspberry Pi.
+If you are connected to the same wifi, you can access the raspberry pi using the following commands:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ssh pi@raspberry.local
+<span class="c1">#enter the password: raspberry</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="installing-packages">
+<h2><span class="section-number">2.3. </span>Installing packages<a class="headerlink" href="#installing-packages" title="Permalink to this headline">¶</a></h2>
+<p>The following packages need to be installed:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 80%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Package</p></th>
+<th class="head"><p>Purpose</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>PiHole</p></td>
+<td><p>Handles the DNS server and DHCP server</p></td>
+</tr>
+<tr class="row-odd"><td><p>PM2</p></td>
+<td><p>Handles to run the script on startup</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>To install them we first need to clone the source code and then install the packages using the <code class="docutils literal notranslate"><span class="pre">install.sh</span></code> script.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/stijnkamp/privacy-controller private-home
+<span class="nb">cd</span> private-home
+chmod +x install.sh
+sudo bash install.sh
+</pre></div>
+</div>
+</div>
+<div class="section" id="starting-the-application">
+<h2><span class="section-number">2.4. </span>Starting the application<a class="headerlink" href="#starting-the-application" title="Permalink to this headline">¶</a></h2>
+<p>To start the controller you need to follow the instructions inside <a class="reference internal" href="../start_scripts/main.html#main-script"><span class="std std-ref">main.py script</span></a>.</p>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="hardware.html" class="btn btn-neutral float-left" title="1. Hardware installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../start_scripts/main.html" class="btn btn-neutral float-right" title="1. main.py script" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, S.L. Kamp.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

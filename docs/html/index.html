@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome to PrivateHome’s documentation! &mdash; PrivateHome 1.0 documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="1. Hardware installation" href="installation/hardware.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="#" class="icon icon-home"> PrivateHome
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Home</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Welcome to PrivateHome’s documentation!</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Repositories</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/stijnkamp/privacy-controller">Controller repository</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/stijnkamp/private-home-interface">Vue frontend repository</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Installation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation/hardware.html">1. Hardware installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation/software.html">2. Software installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Start scripts</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="start_scripts/main.html">1. main.py script</a></li>
+<li class="toctree-l1"><a class="reference internal" href="start_scripts/benchmark.html">2. benchmark.py script</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Shared variables</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="shared/config.html">1. Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="shared/state.html">2. State</a></li>
+<li class="toctree-l1"><a class="reference internal" href="shared/utils.html">3. Utils helpers</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Services</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="services/web.html">1. Web Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="services/firewall.html">2. Firewall Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="services/tracker.html">3. Tracker Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="services/resolver.html">4. Resolver Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="services/websocket.html">5. Websocket Service</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">PrivateHome</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
+      <li>Welcome to PrivateHome’s documentation!</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="welcome-to-privatehome-s-documentation">
+<h1>Welcome to PrivateHome’s documentation!<a class="headerlink" href="#welcome-to-privatehome-s-documentation" title="Permalink to this headline">¶</a></h1>
+<p>The PrivateHome controller is a controller which will enhance your privacy inside your own home.
+It will act as a gateway between your Smart Home devices and the rest of the world.</p>
+<div class="section" id="purposes">
+<h2>Purposes<a class="headerlink" href="#purposes" title="Permalink to this headline">¶</a></h2>
+<p>The controller has 3 main purposes:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<colgroup>
+<col style="width: 13%" />
+<col style="width: 87%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Purpose</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Inform</p></td>
+<td><p>Inform who is sending a amount of data where</p></td>
+</tr>
+<tr class="row-odd"><td><p>Control</p></td>
+<td><p>Setup your smart home system with the functionalities you want</p></td>
+</tr>
+<tr class="row-even"><td><p>Monitor</p></td>
+<td><p>Block or allow data flows inside and outside of the network</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<div class="section" id="inform">
+<h3>Inform<a class="headerlink" href="#inform" title="Permalink to this headline">¶</a></h3>
+<p>The controller tracks all outgoing data using the <a class="reference internal" href="services/tracker.html#tracker-service"><span class="std std-ref">Tracker Service</span></a> and <a class="reference internal" href="services/resolver.html#resolver-service"><span class="std std-ref">Resolver Service</span></a>. It can track the following things:</p>
+<ul class="simple">
+<li><p>When</p></li>
+<li><p>From which device</p></li>
+<li><p>To which server (group)</p></li>
+<li><p>Size</p></li>
+<li><p>Location of server</p></li>
+<li><p>A guess for which functionality</p></li>
+</ul>
+</div>
+<div class="section" id="control">
+<h3>Control<a class="headerlink" href="#control" title="Permalink to this headline">¶</a></h3>
+<p>Using the controller you can setup which functionalities you want to enable for each smart home device you have connected to the network.
+You are able to block specific devices or specific destinations if you do not want to send data to a or any company.
+This is done using the <a class="reference internal" href="services/web.html#web-service"><span class="std std-ref">Web Service</span></a>.</p>
+</div>
+<div class="section" id="monitor">
+<h3>Monitor<a class="headerlink" href="#monitor" title="Permalink to this headline">¶</a></h3>
+<p>The controller can block specific outgoing traffic according to the things you have setup inside your dashboard.
+This is done using the <a class="reference internal" href="services/firewall.html#firewall-service"><span class="std std-ref">Firewall Service</span></a>.</p>
+</div>
+</div>
+<div class="section" id="dashboard">
+<h2>Dashboard<a class="headerlink" href="#dashboard" title="Permalink to this headline">¶</a></h2>
+<p>When everything is installed we can access the dashboard through the following link <a href="http://private-home.local:8888" target="_blank">http://private-home.local:8888</a>.
+Here you can control the entire application add new discovered devices and investigate the data flows.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the link does not work, you can also try it with the ip address of the local machine. If you are connected to the smart home network this will be <code class="docutils literal notranslate"><span class="pre">192.168.2.1</span></code>.</p>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</div>
+<div class="section" id="repositories">
+<h2>Repositories<a class="headerlink" href="#repositories" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Repositories</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/stijnkamp/privacy-controller">Controller repository</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/stijnkamp/private-home-interface">Vue frontend repository</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>We separate the installation between the hardware setup and the software setup.</p>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Installation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation/hardware.html">1. Hardware installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation/software.html">2. Software installation</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="start-scripts">
+<h2>Start scripts<a class="headerlink" href="#start-scripts" title="Permalink to this headline">¶</a></h2>
+<p>The controller has two main scripts which you can run. One is the main controller which you can run using <code class="docutils literal notranslate"><span class="pre">main.py</span></code>.
+The other is <code class="docutils literal notranslate"><span class="pre">benchmark.py</span></code> which can be used to benchmark the tracking of TCP packets.</p>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Start scripts</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="start_scripts/main.html">1. main.py script</a></li>
+<li class="toctree-l1"><a class="reference internal" href="start_scripts/benchmark.html">2. benchmark.py script</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="shared-variables">
+<h2>Shared variables<a class="headerlink" href="#shared-variables" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Shared variables</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="shared/config.html">1. Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="shared/state.html">2. State</a></li>
+<li class="toctree-l1"><a class="reference internal" href="shared/utils.html">3. Utils helpers</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="services">
+<h2>Services<a class="headerlink" href="#services" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Services</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="services/web.html">1. Web Service</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="services/web.html#web-server">1.1. Web server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="services/web.html#database">1.2. Database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="services/web.html#helpers">1.3. Helpers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="services/web.html#modules">1.4. Modules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="services/web.html#api-module">1.4.1. API module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="services/web.html#auth-module">1.4.2. Auth module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="services/web.html#pihole-module">1.4.3. Pihole module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="services/firewall.html">2. Firewall Service</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="services/firewall.html#nf-tables">2.1. NF-tables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="services/firewall.html#general-flow">2.2. General flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="services/firewall.html#module-firewall">2.3. Classes and functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="services/firewall.html#firewall-commands">2.3.1. Firewall commands</a></li>
+<li class="toctree-l3"><a class="reference internal" href="services/firewall.html#ruleparser">2.3.2. RuleParser</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="services/tracker.html">3. Tracker Service</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="services/tracker.html#main-thread">3.1. Main thread</a></li>
+<li class="toctree-l2"><a class="reference internal" href="services/tracker.html#tracker-options">3.2. Tracker options</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="services/tracker.html#module-tracker.tcp_dump_tracker">3.2.1. Tcpdump tracker</a></li>
+<li class="toctree-l3"><a class="reference internal" href="services/tracker.html#module-tracker.scapy_tracker">3.2.2. Scapy tracker</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="services/resolver.html">4. Resolver Service</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="services/resolver.html#module-resolver.dns_lookup">4.1. Resolvers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="services/resolver.html#queue-commands">4.2. Queue commands</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="services/websocket.html">5. Websocket Service</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="services/websocket.html#module-websocket.thread">5.1. Classes and functions</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="installation/hardware.html" class="btn btn-neutral float-right" title="1. Hardware installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, S.L. Kamp.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

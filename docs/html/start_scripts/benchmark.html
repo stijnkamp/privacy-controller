@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2. benchmark.py script &mdash; PrivateHome 1.0 documentation</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="1. Configuration" href="../shared/config.html" />
+    <link rel="prev" title="1. main.py script" href="main.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> PrivateHome
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Home</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Welcome to PrivateHome’s documentation!</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Repositories</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/stijnkamp/privacy-controller">Controller repository</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/stijnkamp/privacy-control-interface">Vue frontend repository</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Installation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation/hardware.html">1. Hardware installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation/software.html">2. Software installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Start scripts</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="main.html">1. main.py script</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">2. benchmark.py script</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Shared variables</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../shared/config.html">1. Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../shared/state.html">2. State</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../shared/utils.html">3. Utils helpers</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Services</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../services/web.html">1. Web Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../services/firewall.html">2. Firewall Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../services/tracker.html">3. Tracker Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../services/resolver.html">4. Resolver Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../services/websocket.html">5. Websocket Service</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PrivateHome</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><span class="section-number">2. </span>benchmark.py script</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="benchmark-py-script">
+<h1><span class="section-number">2. </span>benchmark.py script<a class="headerlink" href="#benchmark-py-script" title="Permalink to this headline">¶</a></h1>
+<p>The benchmark script is mainly used to check if every packet that is send through the gateway will be processed by a TCP tracker. Unfortunately bigger packets are dropped by the system.
+In the current situation the controller retrieves around 80% of all packets, depending on the load of the tracker.</p>
+<span class="target" id="module-benchmarks.raw_send"></span><dl class="py function">
+<dt id="benchmarks.raw_send.clear_buffer">
+<code class="sig-prename descclassname">benchmarks.raw_send.</code><code class="sig-name descname">clear_buffer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sock</span></em><span class="sig-paren">)</span><a class="headerlink" href="#benchmarks.raw_send.clear_buffer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clears buffer before listening to incoming new messages</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>sock</strong> (<em>Socket</em>) – the socket connection with a speficic client</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="benchmarks.raw_send.handle_packet">
+<code class="sig-prename descclassname">benchmarks.raw_send.</code><code class="sig-name descname">handle_packet</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">packet</span></em><span class="sig-paren">)</span><a class="headerlink" href="#benchmarks.raw_send.handle_packet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles incoming packet and discards it if it is not from the sending source.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>packet</strong> (<em>dict</em>) – The packet received by the sender including a random content.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="benchmarks.raw_send.receive_packet">
+<code class="sig-prename descclassname">benchmarks.raw_send.</code><code class="sig-name descname">receive_packet</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sock</span></em>, <em class="sig-param"><span class="n">length</span></em><span class="sig-paren">)</span><a class="headerlink" href="#benchmarks.raw_send.receive_packet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Receives a packet with specific size from 1 open socket</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sock</strong> (<em>Socket</em>) – An connected socket with 1 client</p></li>
+<li><p><strong>length</strong> (<em>int</em>) – Number of bytes that need to be received.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The total anount of data received</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="benchmarks.raw_send.receive_packets">
+<code class="sig-prename descclassname">benchmarks.raw_send.</code><code class="sig-name descname">receive_packets</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sockets</span></em>, <em class="sig-param"><span class="n">length</span></em><span class="sig-paren">)</span><a class="headerlink" href="#benchmarks.raw_send.receive_packets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Receive a specific size of packets from the multiple open packets.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sockets</strong> (<em>Socket</em><em>[</em><em>]</em>) – A list of open sockets</p></li>
+<li><p><strong>length</strong> (<em>int</em>) – The total size of the message that needs to be received.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>_description_</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>_type_</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="benchmarks.raw_send.start">
+<code class="sig-prename descclassname">benchmarks.raw_send.</code><code class="sig-name descname">start</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#benchmarks.raw_send.start" title="Permalink to this definition">¶</a></dt>
+<dd><p>A benchmark for percentage of total packets captured by tcp_dump. It waits until specified packet is received by the multiple ports</p>
+</dd></dl>
+
+<span class="target" id="module-benchmarks.wetransfer"></span><dl class="py function">
+<dt id="benchmarks.wetransfer.handle_packet">
+<code class="sig-prename descclassname">benchmarks.wetransfer.</code><code class="sig-name descname">handle_packet</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">packet</span></em><span class="sig-paren">)</span><a class="headerlink" href="#benchmarks.wetransfer.handle_packet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if packet has been send from a specific location and port.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>packet</strong> (<em>dict</em>) – the packet received by TcpDumpTracker</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="benchmarks.wetransfer.start">
+<code class="sig-prename descclassname">benchmarks.wetransfer.</code><code class="sig-name descname">start</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#benchmarks.wetransfer.start" title="Permalink to this definition">¶</a></dt>
+<dd><p>A benchmark of percentage of total document sent by Wetransfer and captured by tcp_dump</p>
+</dd></dl>
+
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="main.html" class="btn btn-neutral float-left" title="1. main.py script" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../shared/config.html" class="btn btn-neutral float-right" title="1. Configuration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, S.L. Kamp.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
