@@ -50,7 +50,7 @@ def get_location_for_ip(ip):
     url = "https://ip-api.com/json/{}".format(ip)
     r = requests.get(url)
     data = r.json()
-    if data['country_code'] == 'Not found':
+    if data['country'] == 'Not found':
         return False
     return {
         'city': data['city'],
