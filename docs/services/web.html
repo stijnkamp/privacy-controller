@@ -42,7 +42,7 @@
 <p class="caption"><span class="caption-text">Repositories</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/stijnkamp/privacy-controller">Controller repository</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://github.com/stijnkamp/privacy-control-interface">Vue frontend repository</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/stijnkamp/private-home-interface">Vue frontend repository</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Installation</span></p>
 <ul>
@@ -144,27 +144,103 @@ interface, and connecting with the database. It is a Model View Controller archi
 <span class="target" id="module-web.helpers"></span><dl class="py function">
 <dt id="web.helpers.add_relationship">
 <code class="sig-prename descclassname">web.helpers.</code><code class="sig-name descname">add_relationship</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">item</span></em>, <em class="sig-param"><span class="n">relationship</span></em><span class="sig-paren">)</span><a class="headerlink" href="#web.helpers.add_relationship" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Add specified raltionship to SQLAlchemy model and return the dictionary</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>item</strong> (<em>SQLAlechmyModel</em>) – The model where a relationship needs to be added</p></li>
+<li><p><strong>relationship</strong> (<em>string</em>) – The relationship</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The model including the added relationship.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt id="web.helpers.get_input">
 <code class="sig-prename descclassname">web.helpers.</code><code class="sig-name descname">get_input</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">columns</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">request_data</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#web.helpers.get_input" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Retrieve speficied columns from request data. If the column is not available it wont be added to the returned dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>columns</strong> (<em>list</em><em>, </em><em>optional</em>) – Column keys you want to retrieve. Defaults to all columns.</p></li>
+<li><p><strong>request_data</strong> (<em>dict</em><em>, </em><em>optional</em>) – The entire request data. Defaults to request data from flask.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The resulting dictionary with only the needed columns that are not emtpy</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt id="web.helpers.get_or_create">
 <code class="sig-prename descclassname">web.helpers.</code><code class="sig-name descname">get_or_create</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">session</span></em>, <em class="sig-param"><span class="n">model</span></em>, <em class="sig-param"><span class="n">query</span></em>, <em class="sig-param"><span class="n">values</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#web.helpers.get_or_create" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Get model or create one if it does not exists according to the query</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>session</strong> (<em>SQLAlchemySession</em>) – The current database session</p></li>
+<li><p><strong>model</strong> (<em>SQLAlchemyModel</em>) – The model which needs to be retrieved/created</p></li>
+<li><p><strong>query</strong> (<em>dict</em>) – The query to which to retrieve the model if exists</p></li>
+<li><p><strong>values</strong> (<em>dict</em><em>, </em><em>optional</em>) – The values when creating the model. Defaults to the query dictionary.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The retrieved or created model.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>SQLAlchemyModel</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt id="web.helpers.parse_model">
 <code class="sig-prename descclassname">web.helpers.</code><code class="sig-name descname">parse_model</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">item</span></em><span class="sig-paren">)</span><a class="headerlink" href="#web.helpers.parse_model" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Parse a SQLAlchemy model to a dictionary</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>item</strong> (<em>SQLAlechmyModel</em>) – The SQLAlchemyModel</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The represented dict.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt id="web.helpers.update_or_create">
 <code class="sig-prename descclassname">web.helpers.</code><code class="sig-name descname">update_or_create</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">session</span></em>, <em class="sig-param"><span class="n">model</span></em>, <em class="sig-param"><span class="n">query</span></em>, <em class="sig-param"><span class="n">values</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#web.helpers.update_or_create" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Update model or create one if it does not exists according to the query</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>session</strong> (<em>SQLAlchemySession</em>) – The current database session</p></li>
+<li><p><strong>model</strong> (<em>SQLAlchemyModel</em>) – The model which needs to be retrieved/created</p></li>
+<li><p><strong>query</strong> (<em>dict</em>) – The query to which to retrieve the model if exists</p></li>
+<li><p><strong>values</strong> (<em>dict</em><em>, </em><em>optional</em>) – The values when creating the model. Defaults to the query dictionary.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The retrieved or created model.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>SQLAlchemyModel</p>
+</dd>
+</dl>
+</dd></dl>
 
 </div>
 <div class="section" id="modules">
